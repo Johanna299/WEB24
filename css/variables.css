@@ -1,0 +1,11 @@
+:root {
+    --bs-primary: #3F51B5;      /* Primärfarbe: Indigo */
+    --bs-secondary: #FF9800;    /* Sekundärfarbe: Orange */
+    --bs-success: #4CAF50;      /* Erfolgsfarbe: Grün */
+    --bs-danger: #F44336;       /* Warnfarbe: Rot */
+    --bs-info: #2196F3;         /* Informationsfarbe: Blau */
+    --bs-light: #c1c9f5;        /* Hintergrundfarbe: Hellgrau */
+    --bs-dark: #212121;         /* Textfarbe: Dunkelgrau */
+    --bs-gray: #757575;         /* Sekundärtextfarbe: Grau */
+}
+

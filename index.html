@@ -4,56 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listify</title>
-    <link rel="stylesheet" href="css/styles.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Google Font Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- eigenes Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Listify</a>
-        <div class="d-flex align-items-center">
-            <button class="btn btn-outline-secondary">🔄</button>
-            <button class="btn btn-outline-secondary">👤</button>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand mx-auto" href="#">Listify</a>
+        </div>
+    </nav>
+
+    <div class="container-fluid main-layout">
+        <div class="row">
+
+            <!-- Sidebar für Einkaufslisten -->
+            <div class="col-md-3 border-end sidebar">
+                <div class="lists">
+                    <h5>Meine Einkaufslisten</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item active">Liste 1</li>
+                        <li class="list-group-item">Liste 2</li>
+                        <li class="list-group-item">Liste 3</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary w-100 mt-3"><i class="bi bi-plus-lg"></i> Liste hinzufügen</button>
+            </div>
+
+            <!-- Hauptbereich -->
+            <div class="col-md-9 content">
+                <div class="listdetails">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3>Liste 1 <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button></h3>
+                        <button class="btn btn-success">Abschließen</button>
+                    </div>
+                    <ul class="list-group" id="shopping-list">
+                        <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                            <div>
+                                <input class="form-check-input me-2 item-checkbox" type="checkbox">
+                                <span class="item-text"">🍞 1 Weißbrot</span> <!-- TODO id wegmachen, weil das auf mehrere gehen soll -->
+                            </div>
+                            <button class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                            <div>
+                                <input class="form-check-input me-2 item-checkbox" type="checkbox">
+                                <span class="item-text">🍼 3L Mineralwasser</span>
+                            </div>
+                            <button class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
+                        </li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary w-100 mt-3" id="open-context-menu-add-item"><i class="bi bi-plus-lg"></i> Artikel hinzufügen</button>
+            </div>
+
+            <!-- Kontextmenü (rechte Sidebar): Artikel hinzufügen -->
+            <div class="col-md-3 context-menu bg-light border-start p-3 d-none" id="context-menu-add-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5>Artikel hinzufügen</h5>
+                    <button class="btn btn-sm btn-outline-secondary" id="close-context-menu-add-item"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <button class="btn btn-outline-secondary my-2">Filtern</button>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                        Apfel <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                        Birne <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                        Weißbrot <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                        Mineralwasser <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                        Bananen <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+                        Tomaten <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+                    </li>
+                </ul>
+                <button class="btn btn-primary w-100 mt-3"><i class="bi bi-plus-lg"></i> Neuer Artikel...</button>
+            </div>
+
+            <!-- Kontextmenü für Artikelansicht (rechte Sidebar) -->
+            <div class="col-md-3 context-menu bg-light border-start p-3 d-none" id="context-menu-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 id="item-name">
+                        <span id="item-name-text">1 Gurke</span> <!-- Nur zum Anschauen -->
+                        <input type="text" id="item-name-input" class="form-control d-none"> <!-- Wird für Bearbeitung sichtbar -->
+
+                    </h5>
+                    <div class="item-buttons">
+                        <button class="btn btn-sm btn-outline-secondary" id="edit-item"><i class="bi bi-pencil-fill"></i></button>
+                        <button class="btn btn-sm btn-outline-secondary" id="close-context-menu-item"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+
+                <!-- Beschreibung -->
+                <div class="mb-3">
+                    <label class="form-label">Beschreibung</label>
+                    <textarea class="form-control" rows="3" id="item-description" disabled>Gurken-Beschreibung</textarea>
+                </div>
+
+                <!-- Tags -->
+                <fieldset id="item-tags">
+                    <legend>Tags</legend>
+                    <div class="d-flex flex-wrap gap-2" id="tag-container">
+                        <span class="badge bg-secondary tag">
+                            Gemüse <button class="btn btn-danger btn-sm tag-remove d-none"><i class="bi bi-x-lg"></i></button>
+                        </span>
+                        <span class="badge bg-secondary tag">
+                            Bio <button class="btn btn-danger btn-sm tag-remove d-none"><i class="bi bi-x-lg"></i></button>
+                        </span>
+                        <button class="btn btn-sm btn-primary d-none" id="add-tag">+ Tag hinzufügen</button>
+                    </div>
+                </fieldset>
+
+                <!-- Speichern-Button (wird nur im Bearbeitungsmodus sichtbar) -->
+                <button class="btn btn-success w-100 mt-3 d-none" id="save-item">Speichern</button>
+            </div>
+
+
         </div>
     </div>
-</nav>
-
-<div class="container-fluid main-layout">
-    <div class="sidebar p-3">
-        <h5>Meine Einkaufslisten</h5>
-        <ul class="list-group">
-            <li class="list-group-item active">Liste 1</li>
-            <li class="list-group-item">Liste 2</li>
-            <li class="list-group-item">Liste 3</li>
-        </ul>
-        <button class="btn btn-primary w-100 mt-3">+ Liste hinzufügen</button>
-    </div>
-
-    <div class="content p-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <h3>Liste 1 <button class="btn btn-sm btn-outline-secondary">✏️</button></h3>
-            <button class="btn btn-success">Abschließen</button>
-        </div>
-        <button class="btn btn-outline-secondary my-2">Filtern</button>
-        <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between">
-                <span>🍞 1 Weißbrot</span>
-                <button class="btn btn-danger btn-sm">✖</button>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-                <span>🍼 3L Mineralwasser</span>
-                <button class="btn btn-danger btn-sm">✖</button>
-            </li>
-        </ul>
-        <button class="btn btn-primary w-100 mt-3">+ Artikel hinzufügen</button>
-    </div>
-</div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

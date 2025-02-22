@@ -1,16 +1,67 @@
+/* andere stylesheets importieren */
+@import url('variables.css');
+
 body {
     font-family: "Montserrat", sans-serif !important;
 }
 
-
-/* für spezielle Font-Texte:
-<weight>: Use a value from 100 to 900
-<uniquifier>: Use a unique and descriptive class name */
-/*
-.montserrat-<uniquifier> {
-    font-family: "Montserrat", sans-serif;
+/* Listify in Navbar */
+.navbar-brand {
+    font-family: "Montserrat", serif;
     font-optical-sizing: auto;
-    font-weight: <weight>;
-    font-style: normal;
+    font-weight: 900;
+    font-style: italic;
+    color: #FFFFFF;
 }
- */
+
+.navbar {
+    background-color: var(--bs-primary);
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);  /* Verwende die Primärfarbe für Schaltflächen */
+    border-color: var(--bs-primary);       /* Setze die Rahmenfarbe */
+
+    /* TODO GEHT NICHT */
+    :hover {
+        background-color: var(--bs-primary); /* Halte die Primärfarbe */
+        border-color: var(--bs-primary); /* Halte die Primärfarbe */
+        filter: brightness(90%); /* Mache die Schaltfläche 10% dunkler */
+    }
+}
+
+/* Checkboxen in Detailansicht */
+.item-checkbox {
+    width: 24px;  /* Breite der Checkbox */
+    height: 24px; /* Höhe der Checkbox */
+    transform: scale(1.5); /* Vergrößert die Checkbox */
+}
+
+.list-group-item {
+    cursor: pointer; /* Zeigt an, dass Element klickbar ist */
+}
+
+li.list-group-item.active {
+    background-color: var(--bs-light);
+    border-color: var(--bs-light);
+    color: #212529;
+}
+
+.row {
+    flex-grow: 1;  /* Lässt die Zeile den restlichen Platz einnehmen */
+    min-height: 90vh; /* Zeile nimmt restliche Bildschirmhöhe ein TODO UMÄNDERN, navbar berücksichtigen, 90vh ist trotzdem zu wenig, ganz bisserl abstand unten */
+}
+
+.sidebar, .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form-label {
+    font-size: 1rem;
+}
+
+legend {
+    font-size: 1rem;
+}
