@@ -16,6 +16,7 @@
 </head>
 
 <body>
+<body>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand mx-auto" href="#">Listify</a>
@@ -30,12 +31,10 @@
                 <div class="lists">
                     <h5>Meine Einkaufslisten</h5>
                     <ul class="list-group">
-                        <li class="list-group-item active">Liste 1</li>
-                        <li class="list-group-item">Liste 2</li>
-                        <li class="list-group-item">Liste 3</li>
+                        <!-- Listenitems werden dynamisch geladen -->
                     </ul>
                 </div>
-                <button class="btn btn-primary w-100 mt-3"><i class="bi bi-plus-lg"></i> Liste hinzufügen</button>
+                <button class="btn btn-primary w-100 mt-3" id="add-list-button"><i class="bi bi-plus-lg"></i> Liste hinzufügen</button>
             </div>
 
             <!-- Hauptbereich -->
@@ -46,20 +45,7 @@
                         <button class="btn btn-success">Abschließen</button>
                     </div>
                     <ul class="list-group" id="shopping-list">
-                        <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                            <div>
-                                <input class="form-check-input me-2 item-checkbox" type="checkbox">
-                                <span class="item-text"">🍞 1 Weißbrot</span> <!-- TODO id wegmachen, weil das auf mehrere gehen soll -->
-                            </div>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                            <div>
-                                <input class="form-check-input me-2 item-checkbox" type="checkbox">
-                                <span class="item-text">🍼 3L Mineralwasser</span>
-                            </div>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
-                        </li>
+                        <!-- Listeneinträge werden dynamisch geladen -->
                     </ul>
                 </div>
                 <button class="btn btn-primary w-100 mt-3" id="open-context-menu-add-item"><i class="bi bi-plus-lg"></i> Artikel hinzufügen</button>
@@ -73,24 +59,7 @@
                 </div>
                 <button class="btn btn-outline-secondary my-2">Filtern</button>
                 <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                        Apfel <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                        Birne <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                        Weißbrot <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                        Mineralwasser <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                        Bananen <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
-                        Tomaten <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
-                    </li>
+                    <!-- Artikel für Hinzufügen werden dynamisch geladen -->
                 </ul>
                 <button class="btn btn-primary w-100 mt-3"><i class="bi bi-plus-lg"></i> Neuer Artikel...</button>
             </div>
@@ -119,12 +88,12 @@
                 <fieldset id="item-tags">
                     <legend>Tags</legend>
                     <div class="d-flex flex-wrap gap-2" id="tag-container">
+                            <span class="badge bg-secondary tag">
+                                Gemüse <button class="btn btn-danger btn-sm tag-remove d-none"><i class="bi bi-x-lg"></i></button>
+                            </span>
                         <span class="badge bg-secondary tag">
-                            Gemüse <button class="btn btn-danger btn-sm tag-remove d-none"><i class="bi bi-x-lg"></i></button>
-                        </span>
-                        <span class="badge bg-secondary tag">
-                            Bio <button class="btn btn-danger btn-sm tag-remove d-none"><i class="bi bi-x-lg"></i></button>
-                        </span>
+                                Bio <button class="btn btn-danger btn-sm tag-remove d-none"><i class="bi bi-x-lg"></i></button>
+                            </span>
                         <button class="btn btn-sm btn-primary d-none" id="add-tag">+ Tag hinzufügen</button>
                     </div>
                 </fieldset>
@@ -139,6 +108,6 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="js/script.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

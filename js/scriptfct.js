@@ -1,3 +1,5 @@
+//TODO VORHER gemacht, bevor mit MVC gestartet
+
 // Kontextmenü für "Artikel hinzufügen"
 document.addEventListener("DOMContentLoaded", function () {
     const content = document.querySelector(".content");

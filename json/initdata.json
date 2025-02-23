@@ -1,0 +1,116 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Max Mustermann",
+      "email": "max@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Erika Musterfrau",
+      "email": "erika@example.com"
+    }
+  ],
+  "lists": [
+    {
+      "id": 1,
+      "name": "Wochenmarkt",
+      "items": [
+        {
+          "item": {
+            "id": 1,
+            "name": "Äpfel",
+            "symbol": "🍏",
+            "tags": ["Obst", "Essen"]
+          },
+          "quantity": 5,
+          "isChecked": false
+        },
+        {
+          "item": {
+            "id": 2,
+            "name": "Karotten",
+            "symbol": "🥕",
+            "tags": ["Gemüse", "Essen"]
+          },
+          "quantity": 3,
+          "isChecked": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Wocheneinkauf",
+      "items": [
+        {
+          "item": {
+            "id": 3,
+            "name": "Milch",
+            "symbol": "🥛",
+            "tags": ["Getränk", "Essen"]
+          },
+          "quantity": 2,
+          "isChecked": false
+        },
+        {
+          "item": {
+            "id": 4,
+            "name": "Brot",
+            "symbol": "🍞",
+            "tags": ["Backwaren", "Essen"]
+          },
+          "quantity": 1,
+          "isChecked": false
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "name": "Äpfel",
+      "symbol": "🍏",
+      "tags": ["Obst", "Essen"]
+    },
+    {
+      "id": 2,
+      "name": "Karotten",
+      "symbol": "🥕",
+      "tags": ["Gemüse", "Essen"]
+    },
+    {
+      "id": 3,
+      "name": "Milch",
+      "symbol": "🥛",
+      "tags": ["Getränke", "Essen"]
+    },
+    {
+      "id": 4,
+      "name": "Brot",
+      "symbol": "🍞",
+      "tags": ["Backwaren", "Essen"]
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "Obst"
+    },
+    {
+      "id": 2,
+      "name": "Gemüse"
+    },
+    {
+      "id": 3,
+      "name": "Getränke"
+    },
+    {
+      "id": 4,
+      "name": "Backwaren"
+    },
+    {
+      "id": 5,
+      "name": "Essen"
+    }
+  ]
+}
