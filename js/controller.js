@@ -11,27 +11,62 @@ class Controller {
     }
 
     init(){
-        // Event-Listener für "Liste hinzufügen"-Button
-        this.listView.addListButton.addEventListener('click', () => {
-            console.log("'Liste hinzufügen' geklickt");
-            this.listView.renderAddListInput();  // Eingabefeld anzeigen
-        });
+
+        // Event-Listener für alle "Liste hinzufügen"-Buttons
+        this.addAddListBtnEventListener();
 
         // Event-Listener für Eltern-Container, der den dynamischen Submit-Button für neue Listen enthält
         this.addSubmitEventListener();
+
+        // Event-Listener für die Listenelemente hinzufügen
+        this.addListItemEventListener();
     }
 
-    // Event-Delegation: Event-Listener wird auf den Eltern-Container vom Submit-Button für neue Listen gesetzt
+    // Event-Delegation für "Liste hinzufügen"-Button, der auch für dynamische Buttons funktioniert
+    addAddListBtnEventListener() {
+        this.listView.addListButtonContainer.addEventListener('click', (ev) => {
+            if (ev.target.id == "add-list-button") {
+                console.log("'Liste hinzufügen' geklickt");
+                this.listView.renderAddListInput();  // Eingabefeld anzeigen
+            }
+        });
+    }
+
+    // Event-Delegation wg. dynamischen Elementen: Event-Listener wird auf  Eltern-Container vom Submit-Button für neue Listen gesetzt
     addSubmitEventListener() {
         this.listView.addListButtonContainer.addEventListener('click', (ev) => {
             if (ev.target && (ev.target.id == 'submit-list-name') || (ev.target.id == 'submit-list-name-icon')) {
-                console.log("Submit in Listenansicht geklickt");
+                console.log("'Submit' in Listenansicht geklickt");
                 const listName = document.querySelector('#new-list-name').value;
                 if(listName) {
                     model.addList(listName); // dem Model eine neue Liste hinzufügen
+                    this.listView.renderAddListButton(); // nach dem Speichern "Liste hinzufügen"-Button wieder anzeigen
                 }
             }
         });
+    }
+    // TODO wenn Submit geklickt wurde, soll statt Input wieder der Liste hinzufügen Btn da sein
+
+    // Event-Delegation wg. dynamischen Elementen: fügt Event-Listener zu allen Listenelementen hinzu
+    addListItemEventListener() {
+        this.listView.listsContainer.addEventListener('click', (ev) => {
+            console.log("listContainer geklickt");
+            if(ev.target.tagName == 'LI') {
+                this.#setActiveList(ev.target);
+            }
+        });
+    }
+
+    // TODO je nachdem welches aktiv --> listDetailView
+
+    // setzt das aktive Listenelement
+    #setActiveList(clickedItem) {
+        // entfernt die "active"-Klasse von allen Listenelementen
+        const listItems = this.listView.listsContainer.querySelectorAll('li');
+        listItems.forEach(item => item.classList.remove('active'));
+
+        // fügt die "active"-Klasse dem angeklickten Element hinzu
+        clickedItem.classList.add('active');
     }
 
     // sobald JSON Daten geladen wurden, alle Views aktualisieren

@@ -17,6 +17,21 @@ export class ListView {
         this.listsContainer.insertAdjacentHTML("beforeend", html);
     }
 
+    // rendert Button "Liste hinzufügen"
+    renderAddListButton() {
+        const html = `
+            <button class="btn btn-primary w-100 mt-3" id="add-list-button"><i class="bi bi-plus-lg"></i> Liste hinzufügen</button>
+        `;
+
+        // Ersetze den Button durch das Eingabefeld
+        this.addListButtonContainer.innerHTML = html;
+
+        // Neuem Button den Event-Listener hinzufügen
+        document.querySelector("#add-list-button").addEventListener('click', () => {
+            this.renderAddListInput();
+        });
+    }
+
     // rendert Eingabefeld für "Liste hinzufügen"
     renderAddListInput() {
         const html = `
