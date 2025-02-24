@@ -7,8 +7,8 @@ export class ListView {
 
     // rendert ALLE Listen, z.B. beim ersten Laden der Seite
     render(lists) {
-        this.listsContainer.innerHTML = ""; // Vorherige Inhalte löschen
-        lists.forEach(list => this.addList(list)); // Bestehende Methode nutzen
+        this.listsContainer.innerHTML = ""; // vorherige Inhalte löschen
+        lists.forEach(list => this.addList(list));
     }
 
     // fügt eine einzelne Liste hinzu (z.B. durch User-Eingabe oder initiales Laden)
@@ -46,6 +46,6 @@ export class ListView {
 
     // generiert HTML für ein Element der Listenansicht
     #getHTML(list) {
-        return `<li class="list-group-item list-${list.id}">${list.name}</li>`
+        return `<li class="list-group-item list-${list.id}" data-id="${list.id}">${list.name}</li>`;
     }
 }

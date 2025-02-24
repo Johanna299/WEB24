@@ -69,6 +69,12 @@ class Model extends Subject {
             this.notify("addList", list); // Event, für das man sich subscriben kann
         }
     }
+
+    // für listDetailView einer aktiven Liste
+    getListById(id) {
+        return this.lists.get(Number(id));
+    }
+
 }
 
 // singleton pattern

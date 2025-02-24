@@ -1,9 +1,12 @@
 import { model } from "./model.js";
 import { ListView } from "./listview.js";
+import { ListDetailView } from "./listdetailview.js";
 
 class Controller {
     constructor(){
         this.listView = new ListView();
+        this.listDetailView = new ListDetailView();
+        this.activeListId = null; // speichert die ID der aktiven Liste
 
         // Subscribe to the model
         model.subscribe("dataLoaded", this, this.onDataLoaded); //TODO
@@ -45,7 +48,6 @@ class Controller {
             }
         });
     }
-    // TODO wenn Submit geklickt wurde, soll statt Input wieder der Liste hinzufügen Btn da sein
 
     // Event-Delegation wg. dynamischen Elementen: fügt Event-Listener zu allen Listenelementen hinzu
     addListItemEventListener() {
@@ -67,6 +69,16 @@ class Controller {
 
         // fügt die "active"-Klasse dem angeklickten Element hinzu
         clickedItem.classList.add('active');
+
+        // aktive Liste anhand der ID finden
+        const listId = clickedItem.dataset.id;
+        this.activeListId = listId; // speichert die aktuelle aktive Liste
+
+        // entsprechende aktive Liste aus Model holen
+        const list = model.getListById(listId);
+        if(list) {
+            this.listDetailView.render(list);
+        }
     }
 
     // sobald JSON Daten geladen wurden, alle Views aktualisieren
@@ -76,6 +88,17 @@ class Controller {
         // Alle Views aktualisieren
         this.listView.render(data.lists);
         // TODO DetailView und ArticleView aktualisieren, zuvor detailView und articleView importieren!
+
+        // falls es eine gespeicherte aktive Liste gibt, wiederherstellen
+        if (this.activeListId) {
+            const activeList = model.getListById(this.activeListId);
+            if (activeList) {
+                this.listDetailView.render(activeList);
+            }
+        } else if (data.lists.size > 0) {
+            // falls keine aktive Liste gespeichert war, erste Liste auswählen
+            this.#setActiveList(this.listView.listsContainer.querySelector('li'));
+        }
     }
 }
 

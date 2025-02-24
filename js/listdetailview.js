@@ -7,23 +7,34 @@ export class ListDetailView {
     }
 
     render(list) {
-        // Liste und ihre Artikel rendern
-        this.listNameContainer.querySelector('span').textContent = list.name;
-        this.itemsContainer.innerHTML = ''; // Vorherige Items löschen
+        // Listenname
+        this.listNameContainer.innerHTML = `
+        ${list.name}
+        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+        `;
+
+        this.itemsContainer.innerHTML = ""; // vorherige Inhalte löschen
+        // jeden Artikel rendern
         list.items.forEach(item => {
-            const listItem = document.createElement('li');
-            listItem.classList.add('list-group-item');
-            listItem.innerHTML = `
-                <div>
-                    <input class="form-check-input me-2" type="checkbox" data-id="${item.id}">
-                    <span>${item.name}</span>
-                </div>
-                <button class="btn btn-danger btn-sm" data-id="${item.id}"><i class="bi bi-x-lg"></i></button>
-            `;
-            this.itemsContainer.appendChild(listItem);
+            console.log("listdetailview: ", item.item?.symbol, item.item?.name);
+            let html = this.#getHTML(item.item, item.quantity);
+            this.itemsContainer.insertAdjacentHTML("beforeend", html);
         });
 
-        this.addItemButton.classList.remove('d-none');
+        // TODO mit class d-none arbeiten? für Kontextmenüs
+
+    }
+
+    #getHTML(item, quantity) {
+        return `
+        <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item">
+            <div>
+                <input class="form-check-input me-2 item-checkbox" type="checkbox">
+                <span class="item-text"">${item.symbol} ${quantity} ${item.name}</span>
+            </div>
+            <button class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
+        </li>
+        `;
     }
 
     bindItemSelection(handler) {
