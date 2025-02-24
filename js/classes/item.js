@@ -1,7 +1,8 @@
 export default class Item {
-    static id = 4;
-    constructor(name, symbol, tags = [], is) {
-        this.id = ++Item.id;
+    static id = 0; // für fortlaufende id
+    constructor(id, name, symbol, tags = [], is) {
+        // Falls ID angegeben ist, nutze sie (z.B. für initdata.json), sonst erhöhe die static id
+        this.id = id ?? ++Item.id;
         this.name = name;
         this.symbol = symbol;
         this.tags = tags;

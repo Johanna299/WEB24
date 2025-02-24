@@ -1,7 +1,8 @@
 export default class List {
-    static id = 2;
-    constructor(name) {
-        this.id = ++List.id;
+    static id = 0; // für fortlaufende id
+    constructor(id, name) {
+        // Falls ID angegeben ist, nutze sie (z.B. für initdata.json), sonst erhöhe die static id
+        this.id = id ?? ++List.id;
         this.name = name;
         this.items = [];
     }

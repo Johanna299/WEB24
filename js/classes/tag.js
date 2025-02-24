@@ -1,7 +1,8 @@
 export default class Tag {
-    static id = 5;
-    constructor(name) {
-        this.id = ++Tag.id;
+    static id = 0; // für fortlaufende id
+    constructor(id, name) {
+        // Falls ID angegeben ist, nutze sie (z.B. für initdata.json), sonst erhöhe die static id
+        this.id = id ?? ++Tag.id;
         this.name = name;
     }
 }

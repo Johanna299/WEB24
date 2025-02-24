@@ -19,7 +19,7 @@ class Model extends Subject {
                 return response.json();
             })
             .then(data => {
-                console.log("Daten geladen:", data);
+                console.log("Model: Daten geladen:", data);
 
                 // Tags speichern
                 data.tags.forEach(tag => this.tags.set(tag.id, new Tag(tag.id, tag.name)));
@@ -32,22 +32,25 @@ class Model extends Subject {
                 // Listen und enthaltene Items speichern
                 data.lists.forEach(listData => {
                     const list = new List(listData.id, listData.name);
-
                     list.items = listData.items.map(entry => ({
                         item: this.items.get(entry.item.id),
                         quantity: entry.quantity,
                         isChecked: entry.isChecked
                     }));
-
                     this.lists.set(list.id, list);
                 });
 
+                // höchste ID aus JSON ermitteln und für static id's übernehmen
+                List.id = Math.max(...data.lists.map(list => list.id), List.id);
+                Item.id = Math.max(...data.items.map(item => item.id), Item.id);
+                Tag.id = Math.max(...data.tags.map(tag => tag.id), Tag.id);
+
                 // TODO, alle Sichten müssen geupdatet/gerendert werden, die müssen sich auch noch subscriben
-                /*this.notify("dataLoaded", {
+                this.notify("dataLoaded", {
                     lists: this.lists,
                     items: this.items,
                     tags: this.tags
-                });*/
+                });
             })
             .catch(error => console.error("Fehler beim Laden:", error));
     }
@@ -58,10 +61,12 @@ class Model extends Subject {
 
     addList(name) {
         if(name) {
-            let list = new List(name);
+            let list = new List(null,name);
             this.lists.set(list.id, list); // fügt neue Liste in Map lists ein (Schlüssel list.id)
-            console.info("Liste hinzugefügt",list);
-            this.notify("addList", list); // Event werfen (damit man sich dafür subscriben kann)
+            console.log("Model: Liste hinzugefügt",list);
+            // Map nach dem Hinzufügen der Liste in die Konsole ausgeben
+            console.log("Aktuelle Listen in der Map:", this.lists);
+            this.notify("addList", list); // Event, für das man sich subscriben kann
         }
     }
 }
