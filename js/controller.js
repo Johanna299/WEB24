@@ -13,6 +13,10 @@ class Controller {
         model.subscribe("addList", this.listView, this.listView.addList);
         model.subscribe("listNameUpdated", this, this.onListUpdated);
         model.subscribe("itemRemoved", this.listDetailView, this.listDetailView.render);
+        model.subscribe("listCompletedDetailView", this.listDetailView, this.listDetailView.render);
+        model.subscribe("listCompletedListView", this.listView, this.listView.render);
+        model.subscribe("listUncompletedDetailView", this.listDetailView, this.listDetailView.render);
+        model.subscribe("listUncompletedListView", this.listView, this.listView.render);
     }
 
     init(){
@@ -21,20 +25,60 @@ class Controller {
         this.addAddListBtnEventListener();
         // Event-Listener für Eltern-Container, der den dynamischen Submit-Button für neue Listen enthält
         this.addSubmitEventListener();
-        // Event-Listener für die Listenelemente hinzufügen
+        // Event-Listener für die Listenelemente
         this.addListItemEventListener();
 
         // für listdetailview
         // Event-Listener für das Bearbeiten des Listennamens
         this.addEditListNameEventListener();
-        // Event Listener für Speichern-Button registrieren
+        // Event Listener für Speichern-Button
         this.addSaveListNameEventListener();
         // Event Listener für Checkboxen der Items
         this.addItemCheckboxEventListener();
         // Event Listener fürs Entfernen von Items einer Liste
         this.addRemoveItemEventListener();
+        // Event-Listener für "Abschließen"-Button
+        this.addCompleteListEventListener();
+        // Event-Listener für "Aktvieren"-Button
+        this.addActivateListEventListener();
     }
 
+    // Event-Delegation für den "Abschließen"-Button
+    addCompleteListEventListener() {
+        this.listDetailView.completeListContainer.addEventListener("click", (ev) => {
+            if (ev.target.id == "complete-list-button") {
+                const listId = ev.target.dataset.id;
+                console.log("'Abschließen'-Button für Liste geklickt, ListID:", listId);
+
+                const activeList = model.getListById(listId);
+                if (activeList) {
+                    model.completeList(listId);
+                }
+            }
+        });
+    }
+
+    // Event-Delegation für den "Aktivieren"-Button
+    addActivateListEventListener() {
+        this.listDetailView.completeListContainer.addEventListener("click", (ev) => {
+            if (ev.target.id == "activate-list-button") {
+                const listId = ev.target.dataset.id;
+                console.log("'Aktivieren'-Button für Liste geklickt, ListID:", listId);
+
+                const activeList = model.getListById(listId);
+                if (activeList) {
+                    model.uncompleteList(listId);
+                    // Liste in der ListView als aktiv markieren
+                    const listItem = this.listView.listsContainer.querySelector(`li[data-id="${listId}"]`);
+                    if (listItem) {
+                        this.#setActiveList(listItem);
+                    }
+                }
+            }
+        });
+    }
+
+    // Event-Delegation für den Item-enfernen-Button
     addRemoveItemEventListener() {
         this.listDetailView.itemsContainer.addEventListener('click', (ev) => {
             if (ev.target.id == 'remove-item-button' || ev.target.id == 'remove-item-icon') {

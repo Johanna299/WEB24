@@ -5,6 +5,7 @@ export default class List {
         this.id = id ?? ++List.id;
         this.name = name;
         this.items = [];
+        this.completed = false;
     }
 
     addItem(item, quantity) {
@@ -23,8 +24,24 @@ export default class List {
         }
     }
 
+    // Prüft, ob alle Items als erledigt markiert sind
+    isCompletable() {
+        return this.items.length > 0 && this.items.every(item => item.isChecked);
+    }
+
     //TODO
-    markComplete() {
-        console.log(`Liste ${this.name} wurde abgeschlossen.`);
+    markCompleted() {
+        // TODO überprüfen, ob alle Items isChecked true haben: wenn ja, dann Liste abschließen; wenn nicht, Fehlermeldung für User
+        if (this.isCompletable()) {
+            this.completed = true;
+            console.log("Liste wurde abgeschlossen", this);
+        } else {
+            console.warn("Liste kann nicht abgeschlossen werden, nicht alle Items sind erledigt.");
+        }
+    }
+
+    markUncompleted(){
+        this.completed = false;
+        console.log("Liste wurde aktiviert", this);
     }
 }

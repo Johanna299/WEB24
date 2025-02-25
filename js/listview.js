@@ -48,6 +48,9 @@ export class ListView {
 
     // generiert HTML für ein Element der Listenansicht
     #getHTML(list) {
-        return `<li class="list-group-item list-${list.id}" data-id="${list.id}">${list.name}</li>`;
+        // wenn die Liste abgeschlossen ist, andere Hintergrundfarbe
+        const completedClass = list.completed ? "completed" : "";
+
+        return `<li class="list-group-item list-${list.id} ${completedClass}" data-id="${list.id}">${list.name}</li>`;
     }
 }

@@ -41,9 +41,17 @@ body {
     cursor: pointer; /* Zeigt an, dass Element klickbar ist */
 }
 
+/* aktive Listen in Listenansicht */
 li.list-group-item.active {
     background-color: var(--bs-light);
     border-color: var(--bs-light);
+    color: #212529;
+}
+
+/* abgeschlossene Listen in Listenansicht */
+li.list-group-item.completed {
+    background-color: var(--bs-gray);
+    border-color: var(--bs-gray);
     color: #212529;
 }
 

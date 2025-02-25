@@ -36,7 +36,8 @@
           "quantity": 3,
           "isChecked": false
         }
-      ]
+      ],
+      "completed": false
     },
     {
       "id": 2,
@@ -62,7 +63,8 @@
           "quantity": 1,
           "isChecked": false
         }
-      ]
+      ],
+      "completed": false
     }
   ],
   "items": [

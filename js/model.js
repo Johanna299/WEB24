@@ -69,6 +69,31 @@ class Model extends Subject {
         }
     }
 
+    completeList(listId) {
+        const list = this.getListById(listId);
+        if (list && list.isCompletable()) {
+            list.markCompleted();
+            console.log("Model: Aktuelle Listen in der Map:", this.lists);
+            this.notify("listCompletedDetailView", list);
+            this.notify("listCompletedListView", this.lists);
+        } else {
+            alert("Die Liste kann erst abgeschlossen werden, wenn alle Artikel eingekauft wurden.");
+        }
+    }
+
+    // Liste wieder aktivieren
+    uncompleteList(listId) {
+        const list = this.getListById(listId);
+        if (list) {
+            list.markUncompleted();
+            console.log("Model: Aktuelle Listen in der Map:", this.lists);
+        }
+
+        // TODO listview updaten? detailview updaten?
+        this.notify("listUncompletedDetailView", list);
+        this.notify("listUncompletedListView", this.lists);
+    }
+
     // Item bzw. Artikel einer Liste als "eingekauft" markieren
     toggleItemChecked(listId, itemId) {
         const list = this.getListById(listId);
