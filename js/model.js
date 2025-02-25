@@ -59,13 +59,23 @@ class Model extends Subject {
         this.#loadFromJSON();
     }
 
+    updateListName(listId, newName) {
+        const list = this.getListById(listId);
+        if (list && newName) {
+            list.name = newName;
+            console.log("Model: Listename geändert",list);
+            console.log("Model: Aktuelle Listen in der Map:", this.lists);
+            this.notify("listNameUpdated", list); // Änderungs-Event bekanntgeben
+        }
+    }
+
     addList(name) {
         if(name) {
             let list = new List(null,name);
             this.lists.set(list.id, list); // fügt neue Liste in Map lists ein (Schlüssel list.id)
             console.log("Model: Liste hinzugefügt",list);
             // Map nach dem Hinzufügen der Liste in die Konsole ausgeben
-            console.log("Aktuelle Listen in der Map:", this.lists);
+            console.log("Model: Aktuelle Listen in der Map:", this.lists);
             this.notify("addList", list); // Event, für das man sich subscriben kann
         }
     }

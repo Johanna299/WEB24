@@ -37,10 +37,12 @@ export class ListView {
         const html = `
             <div class="d-flex">
                 <input type="text" id="new-list-name" class="form-control me-2" placeholder="Name der Liste">
-                <button class="btn btn-primary" id="submit-list-name"><i class="bi bi-check-lg" id="submit-list-name-icon"></i></button>
+                <button class="btn btn-primary" id="submit-list-name">
+                    <i class="bi bi-check-lg" id="submit-list-name-icon"></i>
+                </button>
             </div>
         `;
-        // Ersetze den Button durch das Eingabefeld
+        // ersetze den Button durch das Eingabefeld
         this.addListButtonContainer.innerHTML = html;
     }
 

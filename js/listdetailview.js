@@ -1,6 +1,6 @@
 export class ListDetailView {
     constructor() {
-        this.listNameContainer = document.querySelector('.listdetails h3');
+        this.listNameContainer = document.querySelector('#list-name-container');
         this.itemsContainer = document.querySelector('#shopping-list');
         this.addItemButton = document.querySelector('#open-context-menu-add-item');
         this.checkboxes = this.itemsContainer.querySelectorAll('.form-check-input');
@@ -9,8 +9,11 @@ export class ListDetailView {
     render(list) {
         // Listenname
         this.listNameContainer.innerHTML = `
-        ${list.name}
-        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-fill"></i>️</button>
+        <h3>${list.name} 
+            <button class="btn btn-sm btn-outline-secondary" id="edit-list-name">
+                <i class="bi bi-pencil-fill" id="edit-list-name-icon"></i>
+            </button>
+        </h3>
         `;
 
         this.itemsContainer.innerHTML = ""; // vorherige Inhalte löschen
@@ -23,6 +26,22 @@ export class ListDetailView {
 
         // TODO mit class d-none arbeiten? für Kontextmenüs
 
+    }
+
+    // rendert Eingabefeld, um den Listennamen zu ändern
+    renderEditListNameInput(list) {
+        // HTML für das Eingabefeld und den Speichern-Button
+        let htmlinput = `
+        <div class="d-flex">
+            <input type="text" id="edit-list-name-input" class="form-control me-2" value="${list.name}">
+            <button class="btn btn-primary" id="save-list-name">
+                <i class="bi bi-check-lg" id="save-list-name-icon"></i>
+            </button>
+        </div>
+        `;
+
+        // ersetze den Listennamen durch das Eingabefeld
+        this.listNameContainer.innerHTML = htmlinput;
     }
 
     #getHTML(item, quantity) {

@@ -11,10 +11,11 @@ class Controller {
         // Subscribe to the model
         model.subscribe("dataLoaded", this, this.onDataLoaded); //TODO
         model.subscribe("addList",this.listView,this.listView.addList);
+        model.subscribe("listNameUpdated", this, this.onListUpdated);
     }
 
     init(){
-
+        // für listview
         // Event-Listener für alle "Liste hinzufügen"-Buttons
         this.addAddListBtnEventListener();
 
@@ -23,6 +24,51 @@ class Controller {
 
         // Event-Listener für die Listenelemente hinzufügen
         this.addListItemEventListener();
+
+        // für listdetailview
+        // Event-Listener für das Bearbeiten des Listennamens
+        this.addEditListNameEventListener();
+
+        // Event Listener für Speichern-Button registrieren
+        this.addSaveListNameEventListener();
+    }
+
+    // Event-Delegation für Listenname-speichern-Button, der auch für dynamische Buttons funktioniert
+    addSaveListNameEventListener() {
+        this.listDetailView.listNameContainer.addEventListener("click", (ev) => {
+            if (ev.target.id == "save-list-name" || ev.target.id == "save-list-name-icon") {
+                console.log("Speichern-Button für Listenname geklickt");
+
+                const inputField = document.querySelector("#edit-list-name-input");
+                if (!inputField) return;
+
+                const newName = inputField.value;
+                if (!newName) return;
+
+                model.updateListName(this.activeListId, newName);
+
+               // TODO falsch von GPT?
+                /*const activeList = model.getListById(this.activeListId);
+                if (activeList) {
+                    activeList.name = newName; // Model aktualisieren
+                    model.notify("listUpdated", activeList); // Model-Änderung bekanntgeben
+                    this.listDetailView.render(activeList); // Ansicht aktualisieren
+                }*/
+            }
+        });
+    }
+
+    // Event-Delegation für Listenname-bearbeiten-Button, der auch für dynamische Edit-Buttons funktioniert
+    addEditListNameEventListener() {
+        this.listDetailView.listNameContainer.addEventListener("click", (ev) => {
+            if (ev.target.id == "edit-list-name" || ev.target.id == "edit-list-name-icon") {
+                console.log("Edit-Button für Listenname geklickt");
+                const activeList = model.getListById(this.activeListId);
+                if (activeList) {
+                    this.listDetailView.renderEditListNameInput(activeList); // TODO Eingabefeld anzeigen
+                }
+            }
+        });
     }
 
     // Event-Delegation für "Liste hinzufügen"-Button, der auch für dynamische Buttons funktioniert
@@ -78,6 +124,21 @@ class Controller {
         const list = model.getListById(listId);
         if(list) {
             this.listDetailView.render(list);
+        }
+    }
+
+    onListUpdated(updatedList) {
+        // listDetailView neu rendern
+        if (updatedList.id == this.activeListId) {
+            this.listDetailView.render(updatedList);
+        }
+
+        // listView neu rendern
+        this.listView.render(model.lists);
+        // aktives Listenelement wieder markieren
+        const newActiveItem = this.listView.listsContainer.querySelector(`li[data-id="${this.activeListId}"]`);
+        if (newActiveItem) {
+            this.#setActiveList(newActiveItem);
         }
     }
 
