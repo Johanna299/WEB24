@@ -51,7 +51,7 @@ export class ListDetailView {
                 <input class="form-check-input me-2 item-checkbox" type="checkbox" id="checkbox-item">
                 <span class="item-text"">${item.symbol} ${quantity} ${item.name}</span>
             </div>
-            <button class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
+            <button class="btn btn-danger btn-sm" id="remove-item-button" data-id=${item.id}><i class="bi bi-x-lg" id="remove-item-icon"></i></button>
         </li>
         `;
     }

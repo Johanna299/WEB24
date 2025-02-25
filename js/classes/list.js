@@ -12,7 +12,7 @@ export default class List {
     }
 
     removeItem(itemId) {
-        this.items = this.items.filter(item => entry.item.id != itemId);
+        this.items = this.items.filter(item => item.item.id != itemId);;
     }
 
     toggleItemChecked(itemId) {

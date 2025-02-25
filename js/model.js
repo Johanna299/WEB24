@@ -59,6 +59,16 @@ class Model extends Subject {
         this.#loadFromJSON();
     }
 
+    removeItemFromList(listId, itemId) {
+        const list = this.getListById(listId);
+        if (list) {
+            list.removeItem(itemId); // entfernt Item aus der Liste
+            console.log("Model: Item aus Liste entfernt");
+            console.log("Model: Aktuelle Listen in der Map:", this.lists);
+            this.notify("itemRemoved", list); // View mitteilen, dass sich die Items der Liste geändert haben
+        }
+    }
+
     // Item bzw. Artikel einer Liste als "eingekauft" markieren
     toggleItemChecked(listId, itemId) {
         const list = this.getListById(listId);

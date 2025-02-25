@@ -10,8 +10,9 @@ class Controller {
 
         // Subscribe to the model
         model.subscribe("dataLoaded", this, this.onDataLoaded); //TODO
-        model.subscribe("addList",this.listView,this.listView.addList);
+        model.subscribe("addList", this.listView, this.listView.addList);
         model.subscribe("listNameUpdated", this, this.onListUpdated);
+        model.subscribe("itemRemoved", this.listDetailView, this.listDetailView.render);
     }
 
     init(){
@@ -30,6 +31,21 @@ class Controller {
         this.addSaveListNameEventListener();
         // Event Listener für Checkboxen der Items
         this.addItemCheckboxEventListener();
+        // Event Listener fürs Entfernen von Items einer Liste
+        this.addRemoveItemEventListener();
+    }
+
+    addRemoveItemEventListener() {
+        this.listDetailView.itemsContainer.addEventListener('click', (ev) => {
+            if (ev.target.id == 'remove-item-button' || ev.target.id == 'remove-item-icon') {
+                const itemId = ev.target.closest('li').dataset.id;  // ID des Items aus `data-id` Attribut extrahieren
+                console.log("Item aus Liste entfernen geklickt, itemId:", itemId);
+                const activeList = model.getListById(this.activeListId);
+                if (activeList) {
+                    model.removeItemFromList(this.activeListId, itemId); // Item von der Liste entfernen
+                }
+            }
+        });
     }
 
     // Event-Delegation für die Item-Checkboxes einer Liste
