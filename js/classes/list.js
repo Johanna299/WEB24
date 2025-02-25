@@ -19,6 +19,7 @@ export default class List {
         const entry = this.items.find(entry => entry.item.id == itemId);
         if (entry) {
             entry.isChecked = !entry.isChecked;
+            console.log("List: Item isChecked", entry.isChecked);
         }
     }
 

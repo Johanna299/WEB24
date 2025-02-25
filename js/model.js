@@ -59,6 +59,17 @@ class Model extends Subject {
         this.#loadFromJSON();
     }
 
+    // Item bzw. Artikel einer Liste als "eingekauft" markieren
+    toggleItemChecked(listId, itemId) {
+        const list = this.getListById(listId);
+        if (list) {
+            list.toggleItemChecked(itemId);
+            console.log("Model: Item in Liste an-/abgehackt");
+            console.log("Model: Aktuelle Listen in der Map:", this.lists);
+        }
+    }
+
+
     updateListName(listId, newName) {
         const list = this.getListById(listId);
         if (list && newName) {

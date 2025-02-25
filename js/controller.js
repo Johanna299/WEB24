@@ -18,19 +18,33 @@ class Controller {
         // für listview
         // Event-Listener für alle "Liste hinzufügen"-Buttons
         this.addAddListBtnEventListener();
-
         // Event-Listener für Eltern-Container, der den dynamischen Submit-Button für neue Listen enthält
         this.addSubmitEventListener();
-
         // Event-Listener für die Listenelemente hinzufügen
         this.addListItemEventListener();
 
         // für listdetailview
         // Event-Listener für das Bearbeiten des Listennamens
         this.addEditListNameEventListener();
-
         // Event Listener für Speichern-Button registrieren
         this.addSaveListNameEventListener();
+        // Event Listener für Checkboxen der Items
+        this.addItemCheckboxEventListener();
+    }
+
+    // Event-Delegation für die Item-Checkboxes einer Liste
+    addItemCheckboxEventListener() {
+        this.listDetailView.itemsContainer.addEventListener("click", (ev) => {
+            if (ev.target.id == "checkbox-item") {
+                const itemId = ev.target.closest('li').dataset.id;  // ID des Items aus `data-id` Attribut extrahieren
+                console.log("Checkbox eines Items geklickt, itemId:", itemId);
+                const activeList = model.getListById(this.activeListId);
+                if (activeList) {
+                    model.toggleItemChecked(this.activeListId, itemId); // aktualisiert das Model
+                    //this.listDetailView.render(activeList); // TODO MIT SUBSCRIBE Render die Liste neu (opt.)
+                }
+            }
+        });
     }
 
     // Event-Delegation für Listenname-speichern-Button, der auch für dynamische Buttons funktioniert
@@ -65,7 +79,7 @@ class Controller {
                 console.log("Edit-Button für Listenname geklickt");
                 const activeList = model.getListById(this.activeListId);
                 if (activeList) {
-                    this.listDetailView.renderEditListNameInput(activeList); // TODO Eingabefeld anzeigen
+                    this.listDetailView.renderEditListNameInput(activeList);
                 }
             }
         });
