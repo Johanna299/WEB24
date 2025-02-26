@@ -21,7 +21,7 @@
             "id": 1,
             "name": "Äpfel",
             "symbol": "🍏",
-            "tags": ["Obst", "Essen"]
+            "tags": [1, 5]
           },
           "quantity": 5,
           "isChecked": false
@@ -31,7 +31,7 @@
             "id": 2,
             "name": "Karotten",
             "symbol": "🥕",
-            "tags": ["Gemüse", "Essen"]
+            "tags": [2, 5]
           },
           "quantity": 3,
           "isChecked": false
@@ -48,7 +48,7 @@
             "id": 3,
             "name": "Milch",
             "symbol": "🥛",
-            "tags": ["Getränk", "Essen"]
+            "tags": [3, 5]
           },
           "quantity": 2,
           "isChecked": false
@@ -58,7 +58,7 @@
             "id": 4,
             "name": "Brot",
             "symbol": "🍞",
-            "tags": ["Backwaren", "Essen"]
+            "tags": [4, 5]
           },
           "quantity": 1,
           "isChecked": false
@@ -72,47 +72,32 @@
       "id": 1,
       "name": "Äpfel",
       "symbol": "🍏",
-      "tags": ["Obst", "Essen"]
+      "tags": [1, 5]
     },
     {
       "id": 2,
       "name": "Karotten",
       "symbol": "🥕",
-      "tags": ["Gemüse", "Essen"]
+      "tags": [2, 5]
     },
     {
       "id": 3,
       "name": "Milch",
       "symbol": "🥛",
-      "tags": ["Getränke", "Essen"]
+      "tags": [3, 5]
     },
     {
       "id": 4,
       "name": "Brot",
       "symbol": "🍞",
-      "tags": ["Backwaren", "Essen"]
+      "tags": [4, 5]
     }
   ],
   "tags": [
-    {
-      "id": 1,
-      "name": "Obst"
-    },
-    {
-      "id": 2,
-      "name": "Gemüse"
-    },
-    {
-      "id": 3,
-      "name": "Getränke"
-    },
-    {
-      "id": 4,
-      "name": "Backwaren"
-    },
-    {
-      "id": 5,
-      "name": "Essen"
-    }
+    { "id": 1, "name": "Obst" },
+    { "id": 2, "name": "Gemüse" },
+    { "id": 3, "name": "Getränke" },
+    { "id": 4, "name": "Backwaren" },
+    { "id": 5, "name": "Essen" }
   ]
 }

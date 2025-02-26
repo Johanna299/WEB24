@@ -13,6 +13,9 @@ export class ArticleView {
 
 
         // Einzelansicht eines Artikels
+        this.contextMenuItem = document.querySelector('#context-menu-item');
+
+        // TODO löschen?
         this.editButton = document.querySelector('#edit-item');
         this.saveButton = document.querySelector('#save-item');
         this.itemNameText = document.querySelector('#item-name-text');
@@ -38,8 +41,8 @@ export class ArticleView {
             let itemHtml = `
             <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item" data-id="${item.id}">
             ${item.symbol} ${item.name}
-                <button class="btn btn-sm btn-outline-secondary" id="edit-item-button">
-                    <i class="bi bi-pencil-fill" id="edit-item-icon"></i>️
+                <button class="btn btn-sm btn-outline-secondary" id="edit-item-button" data-id="${item.id}">
+                    <i class="bi bi-pencil-fill" id="edit-item-icon" data-id="${item.id}"></i>️
                 </button>
             </li>
             `;
@@ -132,19 +135,75 @@ export class ArticleView {
         this.newArticleMenu.classList.add('d-none');
     }
 
+    renderEditItemMenu(item) {
+        this.detailView.classList.remove('col-md-9');
+        this.detailView.classList.add('col-md-6');
+
+        this.contextMenuItem.classList.remove('d-none');
+        this.contextMenu.innerHTML = "";
+
+        let html = `
+        <div class="d-flex justify-content-between align-items-center">
+            <h5>Artikel bearbeiten</h5>
+            <button class="btn btn-sm btn-outline-secondary" id="close-context-menu-item">
+                <i class="bi bi-x-lg" id="close-context-menu-item-icon"></i>
+            </button>
+        </div>
+
+        <div class="mb-3">
+            <label for="edit-item-symbol" class="form-label">Symbol:</label>
+            <input type="text" id="edit-item-symbol" class="form-control" value="${item.symbol}" placeholder="Symbol">
+        </div>
+
+        <div class="mb-3">
+            <label for="edit-item-name" class="form-label">Artikelname:</label>
+            <input type="text" id="edit-item-name" class="form-control" value="${item.name}" placeholder="Artikelname">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tags:</label>
+            <ul class="list-group" id="edit-item-tags">
+                ${item.tags.map(tag => `
+                    <li class="list-group-item d-flex justify-content-between align-items-center" id="tag-${tag.id}">
+                        <span>${tag.name}</span>
+                        <button class="btn btn-danger btn-sm" id="remove-tag-button" data-tag-id="${tag.id}" data-item-id="${item.id}">
+                            <i class="bi bi-x-lg" id="remove-tag-icon" data-tag-id="${tag.id}" data-item-id="${item.id}"></i>
+                        </button>
+                    </li>
+                `).join('')} 
+            </ul>
+            <!-- Neuer Tag Button -->
+            <button class="btn btn-primary btn-sm mt-2" id="add-new-tag">
+                <i class="bi bi-plus-lg"></i> Neuer Tag
+            </button>
+        </div>
+
+</div>
+
+        <button class="btn btn-primary w-100 mt-3" id="save-edited-item-button">
+            <i class="bi bi-check-lg" id="save-edited-item-icon"></i> Änderungen speichern
+        </button>
+        `;
+
+        this.contextMenu.insertAdjacentHTML("beforeend", html);
+    }
+
     // Tags im Filter-Modal rendern
     renderFilterTags(tags) {
         this.filterTagsContainer.innerHTML = ""; // vorherige Inhalte entfernen
 
         tags.forEach(tag => {
             let tagElement = document.createElement("div");
-            tagElement.classList.add("form-check");
+            tagElement.classList.add("form-check", "d-block");
 
             tagElement.innerHTML = `
             <input class="form-check-input" type="checkbox" value="${tag.id}" id="tag-${tag.id}">
             <label class="form-check-label" for="tag-${tag.id}">
                 ${tag.name}
             </label>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-tag-id="${tag.id}" id="delete-tag-button">
+                <i class="bi bi-trash3-fill" id="delete-tag-icon" data-tag-id="${tag.id}"></i>
+            </button>
         `;
 
             this.filterTagsContainer.appendChild(tagElement);
@@ -178,7 +237,7 @@ export class ArticleView {
         console.log("Gefilterte Artikel:", filteredItems);
 
 
-        this.renderAddItem(model.getListById(listId), filteredItems);
+        this.renderAddItem(filteredItems);
     }
 
 }

@@ -22,6 +22,7 @@ class Controller {
         model.subscribe("itemAddedToList", this.listDetailView, this.listDetailView.render);
         model.subscribe("newItemCreated", this.articleView, this.articleView.renderAddItem);
         model.subscribe("newTagCreated", this.articleView, this.articleView.addNewTagToTagCheckboxes);
+        model.subscribe("removedTagFromItem", this.articleView, this.articleView.renderEditItemMenu);
     }
 
     init(){
@@ -66,6 +67,81 @@ class Controller {
         this.addSaveNewItemEventListener();
         // Event-Listener für den "Tag erstellen"-Button
         this.addNewTagEventListener();
+        // Event-Listener zum Bearbeiten eines Artikels
+        this.addEditItemEventListener();
+        // Event-Listener zum Entfernen eines Tags vom Artikel
+        this.addRemoveTagFromItemEventListener();
+        // Event-Listener fürs endgültige Löschen von Tags
+        this.addDeleteTagEventListener();
+    }
+
+    // Event-Listener fürs endgültige Löschen von Tags
+    addDeleteTagEventListener() {
+        const deleteTagModal = new bootstrap.Modal(document.getElementById("deleteTagModal"));
+        let currentTagId = null;
+
+        document.querySelector("#filter-tags-container").addEventListener("click", (ev) => {
+            if(ev.target.id == "delete-tag-button" || ev.target.id == "delete-tag-icon"){
+                console.log("'Tag löschen' geklickt");
+
+                currentTagId = ev.target.dataset.tagId;
+                const tag = model.getTagById(currentTagId);
+
+                // TODO checken, ob Tag noch verwendet wird
+                if(tag.itemIds.size > 0) {
+                    alert(`${tag.name} wird noch verwendet.`);
+                    return;
+                }
+                // TODO Sicherheitsabfrage
+                document.getElementById("deleteTagModalLabel").textContent = `Tag "${tag.name}" löschen?`;
+                deleteTagModal.show();
+
+            }
+
+        });
+
+        document.getElementById("confirmDeleteTag").addEventListener("click", () => {
+            if (currentTagId) {
+                model.deleteTag(currentTagId);
+                deleteTagModal.hide();
+            }
+        });
+    }
+
+    addRemoveTagFromItemEventListener() {
+        this.articleView.contextMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "remove-tag-button" || ev.target.id == "remove-tag-icon"){
+                console.log("'Tag entfernen' geklickt");
+
+                const tagId = ev.target.dataset.tagId;
+                const itemId = ev.target.dataset.itemId;
+                const tag = model.getTagById(tagId);
+                const item = model.getItemById(itemId);
+
+                model.removeTagFromItem(tag, item);
+            }
+
+        });
+    }
+
+    addEditItemEventListener() {
+        this.articleView.allItemsContainer.addEventListener("click", (ev) => {
+            if(ev.target.id == "edit-item-button" || ev.target.id == "edit-item-icon"){
+                console.log("'Artikel bearbeiten' geklickt");
+
+                const itemId = ev.target.dataset.id;
+                const item = model.getItemById(itemId);
+
+                // Zeige das Bearbeitungsmenü an
+                this.articleView.renderEditItemMenu(item); // TODO
+
+                // TODO Füge EventListener für Speichern hinzu
+                /*this.articleView.saveButton.addEventListener("click", () => {
+                    this.saveItemChanges(item);
+                });*/
+            }
+
+        });
     }
 
     // Event-Delegation für den "Tag erstellen"-Button
@@ -99,7 +175,8 @@ class Controller {
                 // Werte aus den Eingabefeldern auslesen
                 const symbol = document.querySelector("#new-item-symbol").value.trim();
                 const name = document.querySelector("#new-item-name").value.trim();
-                const tags = [...document.querySelectorAll("#tag-checkboxes input:checked")].map(tag => tag.value);
+                const tagIds = [...document.querySelectorAll("#tag-checkboxes input:checked")].map(tag => tag.value);
+                const tags = tagIds.map(tagId => model.getTagById(tagId));
 
                 // Validierung: Name darf nicht leer sein
                 if (!name) {
@@ -189,6 +266,11 @@ class Controller {
     // Event-Listener zur Auswahl eines Artikels
     addItemEventListener() {
         this.articleView.allItemsContainer.addEventListener("click", (ev) => {
+            // Wenn der Klick auf den Edit-Button erfolgt, nicht weiter verarbeiten
+            if (ev.target.closest('#edit-item-button')) {
+                return;
+            }
+
             console.log("Bestehende Artikel angeklickt");
             let itemId = ev.target.dataset.id;
             const item = model.getItemById(itemId);

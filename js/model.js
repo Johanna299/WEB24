@@ -26,7 +26,8 @@ class Model extends Subject {
 
                 // Einzelne Items speichern
                 data.items.forEach(item => {
-                    this.items.set(item.id, new Item(item.id, item.name, item.symbol, item.tags));
+                    this.items.set(item.id, new Item(item.id, item.name, item.symbol,
+                        item.tags.map(id => this.tags.get(id))));
                 });
 
                 // Listen und enthaltene Items speichern
@@ -59,10 +60,20 @@ class Model extends Subject {
         this.#loadFromJSON();
     }
 
+    deleteTag(currentTagId) {
+        console.log(this.tags.delete(Number(currentTagId)));
+        console.log("Model: Tag gelöcht", currentTagId);
+        console.log("Model: Aktuelle Tags: ", this.tags);
+
+        // TODO model notify
+    }
+
     // filtert Artikel basierend auf den Tag-IDs
     getFilteredItemsByTags(selectedTagIds) {
+        console.log(selectedTagIds);
+        console.log(this.items);
         return Array.from(this.items.values()).filter(item =>
-            selectedTagIds.every(tagId => item.tags.includes(this.getTagById(tagId)))
+            Array.from(item.tags).some(tag => new Set(selectedTagIds).has(tag.id))
         );
     }
 
@@ -99,6 +110,11 @@ class Model extends Subject {
             console.log("Model: Aktuelle Listen in der Map:", this.lists);
             this.notify("itemRemoved", list); // View mitteilen, dass sich die Items der Liste geändert haben
         }
+    }
+
+    removeTagFromItem(tag, item) {
+        item.removeTag(tag);
+        this.notify("removedTagFromItem", item);
     }
 
     completeList(listId) {
