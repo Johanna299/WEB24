@@ -68,6 +68,14 @@ class Model extends Subject {
         model.notify("deletedTag", this.tags);
     }
 
+    deleteItem(currentItemId) {
+        console.log(this.items.delete(Number(currentItemId)));
+        console.log("Model: Item gelöcht", currentItemId);
+        console.log("Model: Aktuelle Items: ", this.items);
+
+        //model.notify("deletedItem", this.items);
+    }
+
     // filtert Artikel basierend auf den Tag-IDs
     getFilteredItemsByTags(selectedTagIds) {
         console.log(selectedTagIds);

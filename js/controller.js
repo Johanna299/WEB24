@@ -84,7 +84,47 @@ class Controller {
         this.addCloseEditItemEventListener();
         // Event-Listener für "Änderungen speichern" in "Artikel bearbeiten"
         this.addSaveEditedItemEventListener();
+        // Event-Listener fürs endgültige Löschen von Items
+        this.addDeleteItemEventListener();
     }
+
+    // Event-Listener fürs endgültige Löschen von Items
+    addDeleteItemEventListener() {
+        const deleteItemModal = new bootstrap.Modal(document.getElementById("deleteItemModal"));
+        let currentItemId = null;
+
+        this.articleView.contextMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "detelete-item-button" || ev.target.id == "delete-item-icon"){
+                console.log("'Item löschen' geklickt");
+
+                currentItemId = ev.target.dataset.id;
+                const item = model.getItemById(currentItemId);
+
+                // checken, ob Item noch verwendet wird
+                const isItemUsed = Array.from(model.lists.values()).some(list =>
+                    list.items.some(entry => entry.item.id == currentItemId)
+                );
+
+                if (isItemUsed) {
+                    alert(`${item.name} wird noch verwendet.`);
+                    return;
+                }
+                // Sicherheitsabfrage
+                document.getElementById("deleteItemModalLabel").textContent = `Item "${item.name}" löschen?`;
+                deleteItemModal.show();
+
+            }
+
+        });
+
+        document.getElementById("confirmDeleteItem").addEventListener("click", () => {
+            if (currentItemId) {
+                model.deleteItem(currentItemId);
+                deleteItemModal.hide();
+            }
+        });
+    }
+
 
     // Event-Listener für "Änderungen speichern" in "Artikel bearbeiten"
     addSaveEditedItemEventListener() {

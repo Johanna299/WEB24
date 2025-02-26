@@ -180,10 +180,12 @@ export class ArticleView {
             </div>
         </div>
 
-
-
         <button class="btn btn-primary w-100 mt-3" id="save-edited-item-button" data-id="${item.id}">
             <i class="bi bi-check-lg" id="save-edited-item-icon" data-id="${item.id}"></i> Änderungen speichern
+        </button>
+        
+        <button class="btn btn-danger w-100 mt-3" id="detelete-item-button" data-id="${item.id}">
+            <i class="bi bi-trash3-fill" id="delete-item-icon" data-id="${item.id}"></i>
         </button>
         `;
 
@@ -233,7 +235,7 @@ export class ArticleView {
             <label class="form-check-label" for="tag-${tag.id}">
                 ${tag.name}
             </label>
-            <button type="button" class="btn btn-outline-secondary btn-sm" data-tag-id="${tag.id}" id="delete-tag-button">
+            <button type="button" class="btn btn-outline-danger btn-sm" data-tag-id="${tag.id}" id="delete-tag-button">
                 <i class="bi bi-trash3-fill" id="delete-tag-icon" data-tag-id="${tag.id}"></i>
             </button>
         `;
