@@ -59,6 +59,31 @@ class Model extends Subject {
         this.#loadFromJSON();
     }
 
+    // Item in angegebener Menge der Liste hinzufügen
+    addItemToList(list, item, quantity) {
+        if (!list || !item || !quantity) {
+            console.error("Fehler: Model: Ungültige Parameter für addItemToList");
+            return;
+        }
+
+        // prüfen, ob das Item bereits in der Liste existiert
+        let existingItem = list.items.find(i => i.item.id === item.id);
+
+        if (existingItem) {
+            // falls ja, erhöhe nur die Menge
+            existingItem.quantity += parseInt(quantity, 10);
+        } else {
+            //falls nicht, füge das Item über die addItem-Methode hinzu
+            list.addItem(item, quantity);
+        }
+
+        console.log(`Model: ${quantity}x '${item.name}' zu Liste '${list.name}' hinzugefügt.`);
+        console.log("Model: Aktuelle Listen in der Map:", this.lists);
+
+        // Liste updaten und Observer benachrichtigen
+        this.notify("itemAddedToList", list);
+    }
+
     removeItemFromList(listId, itemId) {
         const list = this.getListById(listId);
         if (list) {
@@ -104,7 +129,6 @@ class Model extends Subject {
         }
     }
 
-
     updateListName(listId, newName) {
         const list = this.getListById(listId);
         if (list && newName) {
@@ -126,9 +150,14 @@ class Model extends Subject {
         }
     }
 
-    // für listDetailView einer aktiven Liste
+    // liefert list anhand einer listId
     getListById(id) {
         return this.lists.get(Number(id));
+    }
+
+    // liefert item anhand einer itemId
+    getItemById(id) {
+        return this.items.get(Number(id));
     }
 
 }

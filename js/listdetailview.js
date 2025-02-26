@@ -3,7 +3,7 @@ export class ListDetailView {
         this.listNameContainer = document.querySelector('#list-name-container');
         this.completeListContainer = document.querySelector('#complete-list-container');
         this.itemsContainer = document.querySelector('#shopping-list');
-        this.addItemButton = document.querySelector('#open-context-menu-add-item');
+        this.addItemButtonContainer = document.querySelector('.add-item-list-container');
         this.checkboxes = this.itemsContainer.querySelectorAll('.form-check-input');
     }
 
@@ -31,6 +31,12 @@ export class ListDetailView {
             let html = this.#getHTML(item.item, item.quantity, item.isChecked, list.completed);
             this.itemsContainer.insertAdjacentHTML("beforeend", html);
         });
+
+        this.addItemButtonContainer.innerHTML = `
+        <button class="btn btn-primary w-100 mt-3" id="open-context-menu-add-item" data-id="${list.id}">
+            <i class="bi bi-plus-lg" id="open-context-menu-add-item-icon"></i> Artikel hinzufügen
+        </button>
+        `;
 
         // TODO mit class d-none arbeiten? für Kontextmenüs
 

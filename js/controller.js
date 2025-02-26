@@ -1,11 +1,13 @@
 import { model } from "./model.js";
 import { ListView } from "./listview.js";
 import { ListDetailView } from "./listdetailview.js";
+import { ArticleView } from "./articleview.js";
 
 class Controller {
     constructor(){
         this.listView = new ListView();
         this.listDetailView = new ListDetailView();
+        this.articleView = new ArticleView();
         this.activeListId = null; // speichert die ID der aktiven Liste
 
         // Subscribe to the model
@@ -17,6 +19,7 @@ class Controller {
         model.subscribe("listCompletedListView", this.listView, this.listView.render);
         model.subscribe("listUncompletedDetailView", this.listDetailView, this.listDetailView.render);
         model.subscribe("listUncompletedListView", this.listView, this.listView.render);
+        model.subscribe("itemAddedToList", this.listDetailView, this.listDetailView.render);
     }
 
     init(){
@@ -41,6 +44,79 @@ class Controller {
         this.addCompleteListEventListener();
         // Event-Listener für "Aktvieren"-Button
         this.addActivateListEventListener();
+        // Event-Listener für "Artikel hinzufügen"-Button
+        this.addAddItemEventListener();
+
+        // für articleview
+        // Event-Listener für "Artikel hinzufügen"-Ansicht schließen
+        this.addCloseAddItemEventListener();
+        // Event-Listener zur Auswahl eines Artikels
+        this.addItemEventListener();
+        // Event-Listener zur Bestätigung der Mengeneingabe eines Artikels
+        this.addSubmitQuantityListener();
+    }
+
+    // Event-Listener zur Bestätigung der Mengeneingabe eines Artikels
+    addSubmitQuantityListener(){
+        this.articleView.quantityInputContainer.addEventListener("click", (ev) => {
+            if(ev.target.id == "submit-item-quantity" || ev.target.id == "submit-item-quantity-icon"){
+                console.log("Mengeneingabe bestätigt");
+
+                const inputField = document.querySelector("#quantity-input");
+                if (!inputField) return;
+
+                let quantity = inputField.value;
+                if (!quantity) return;
+                console.log(quantity);
+
+                let itemId = ev.target.dataset.id;
+                const item = model.getItemById(itemId);
+                console.log(item);
+
+                const list = model.getListById(this.activeListId); // derzeit aktive Liste holen
+                if (!list) {
+                    console.error("Keine aktive Liste gefunden!");
+                    return;
+                }
+                console.log(list);
+
+                // Item in angegebener Menge der Liste hinzufügen
+                model.addItemToList(list, item, quantity);
+
+                // TODO submit input ausblenden
+            }
+        });
+    }
+
+    // Event-Listener zur Auswahl eines Artikels
+    addItemEventListener() {
+        this.articleView.allItemsContainer.addEventListener("click", (ev) => {
+            console.log("Bestehende Artikel angeklickt");
+            let itemId = ev.target.dataset.id;
+            const item = model.getItemById(itemId);
+            this.articleView.renderQuantityInput(item); // TODO
+        });
+    }
+
+    // Event-Listener für "Artikel hinzufügen"-Ansicht schließen
+    addCloseAddItemEventListener() {
+        this.articleView.closeButton.addEventListener("click", (ev) => {
+            this.articleView.closeAddItemMenu();
+        });
+    }
+
+    // Event-Delegation für den "Artikel hinzufügen"-Button
+    addAddItemEventListener() {
+        this.listDetailView.addItemButtonContainer.addEventListener("click", (ev) => {
+            if (ev.target.id == "open-context-menu-add-item" || ev.target.id == "open-context-menu-add-item-icon") {
+                this.activeListId = ev.target.dataset.id;  // Speichere die aktive ListID
+                const listId = ev.target.dataset.id;
+                console.log("'Artikel hinzufügen'-Button für Liste geklickt, ListID:", listId);
+
+                const list = model.getListById(listId);
+                this.articleView.renderAddItem(list, model.items); // TODO benötigt alle bestehenden items von model.js
+            }
+        });
     }
 
     // Event-Delegation für den "Abschließen"-Button
@@ -120,14 +196,6 @@ class Controller {
                 if (!newName) return;
 
                 model.updateListName(this.activeListId, newName);
-
-               // TODO falsch von GPT?
-                /*const activeList = model.getListById(this.activeListId);
-                if (activeList) {
-                    activeList.name = newName; // Model aktualisieren
-                    model.notify("listUpdated", activeList); // Model-Änderung bekanntgeben
-                    this.listDetailView.render(activeList); // Ansicht aktualisieren
-                }*/
             }
         });
     }

@@ -73,3 +73,11 @@ li.list-group-item.completed {
 legend {
     font-size: 1rem;
 }
+
+#quantity-input-container {
+    padding-top: 16px;
+}
+
+#new-article {
+    margin-bottom: 1rem;
+}

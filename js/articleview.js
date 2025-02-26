@@ -1,6 +1,14 @@
 export class ArticleView {
     constructor() {
-        this.contextMenu = document.querySelector('#context-menu-item');
+        // "Artikel hinzufügen"-Ansicht
+        this.contextMenu = document.querySelector('#context-menu-add-item');
+        this.allItemsContainer = document.querySelector('.list-group.allitems');
+        this.detailView = document.querySelector('.content');
+        this.closeButton = document.querySelector('#close-context-menu-add-item');
+        this.quantityInputContainer = document.querySelector('#quantity-input-container');
+
+
+        // Einzelansicht eines Artikels
         this.editButton = document.querySelector('#edit-item');
         this.saveButton = document.querySelector('#save-item');
         this.itemNameText = document.querySelector('#item-name-text');
@@ -9,43 +17,47 @@ export class ArticleView {
         this.tagContainer = document.querySelector('#tag-container');
     }
 
-    render(item) {
+    renderAddItem(list, allItems) {
+        // Detailansicht verkleinern
+        this.detailView.classList.remove('col-md-9');
+        this.detailView.classList.add('col-md-6');
+
         this.contextMenu.classList.remove('d-none');
-        this.itemNameText.textContent = item.name;
-        this.itemNameInput.value = item.name;
-        this.itemDescription.value = item.description;
 
-        // Tags rendern
-        this.tagContainer.innerHTML = '';
-        item.tags.forEach(tag => {
-            const tagElement = document.createElement('span');
-            tagElement.classList.add('badge', 'bg-secondary', 'tag');
-            tagElement.textContent = tag;
-            this.tagContainer.appendChild(tagElement);
+        // bestehende Artikel rendern
+        this.allItemsContainer.innerHTML = ""; // vorherige Inhalte entfernen
+
+        allItems.forEach((item) => {
+            let itemHtml = `
+            <li class="list-group-item d-flex justify-content-between align-items-center open-context-menu-item" data-id="${item.id}">
+            ${item.symbol} ${item.name}
+                <button class="btn btn-sm btn-outline-secondary" id="edit-item-button">
+                    <i class="bi bi-pencil-fill" id="edit-item-icon"></i>️
+                </button>
+            </li>
+            `;
+
+            this.allItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
         });
+
+        console.log("Artikel-Auswahl gerendert:", allItems);
     }
 
-    bindEditItem(handler) {
-        this.editButton.addEventListener('click', () => {
-            this.itemNameText.classList.add('d-none');
-            this.itemNameInput.classList.remove('d-none');
-            this.saveButton.classList.remove('d-none');
-        });
-    }
+    // "Artikel hinzufügen"-Ansicht schließen
+    closeAddItemMenu() {
+        // Detailansicht vergrößern
+        this.detailView.classList.remove('col-md-6');
+        this.detailView.classList.add('col-md-9');
 
-    bindSaveItem(handler) {
-        this.saveButton.addEventListener('click', () => {
-            const updatedItem = {
-                name: this.itemNameInput.value,
-                description: this.itemDescription.value,
-                tags: [...this.tagContainer.querySelectorAll('.tag')].map(tag => tag.textContent),
-            };
-            handler(updatedItem);
-            this.contextMenu.classList.add('d-none');
-        });
-    }
-
-    hideContextMenu() {
         this.contextMenu.classList.add('d-none');
+    }
+
+    renderQuantityInput(item){
+        this.quantityInputContainer.innerHTML = `
+        <input type="number" id="quantity-input" class="form-control form-control-sm w-25" min="1" value="1"> ${item.symbol} ${item.name}
+        <button class="btn btn-primary" id="submit-item-quantity" data-id="${item.id}">
+            <i class="bi bi-check-lg" id="submit-item-quantity-icon" data-id="${item.id}"></i>
+        </button>
+        `;
     }
 }
