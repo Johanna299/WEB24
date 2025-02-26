@@ -81,3 +81,99 @@ legend {
 #new-article {
     margin-bottom: 1rem;
 }
+
+/* 1. CSS Animation: "Wackel-Effekt" für "Liste hinzufügen" und "Artikel hinzufügen"-Button */
+/* Keyframes für Wackel-Effekt von Buttons */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-2px); }
+    40% { transform: translateX(2px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); }
+}
+
+#add-list-button:hover,
+#open-context-menu-add-item:hover {
+    animation: shake 0.3s ease-in-out;
+}
+
+/* 2. CSS Animation: Beim Liste-Abschließen wackelt Liste kurz und wird gold umrandet*/
+/* Keyframes für Wackel-Effekt einer listDetailView */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Keyframes für grünen Glow-Effekt */
+@keyframes glow {
+    0% { box-shadow: 0 0 0px var(--bs-success); }
+    50% { box-shadow: 0 0 15px var(--bs-success); }
+    100% { box-shadow: 0 0 0px var(--bs-success); }
+}
+
+/* Klasse für die Animation */
+.completed-animation {
+    animation: shake 0.4s ease-in-out, glow 1s ease-in-out;
+}
+
+/* 3. CSS Animation */
+/* Dreh-Animation bei Klick auf Navbar-Brand */
+.navbar-brand {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    transition: transform 0.4s ease, color 0.4s ease;
+}
+
+/* Animationseffekt bei Klick */
+.navbar-brand.clicked {
+    transform: rotate(360deg) scale(1.5);
+}
+
+.navbar-brand.clicked::after {
+    content: "📋";
+    position: absolute;
+    top: 0px;
+    right: -30px;
+    font-size: 24px;
+}
+
+/* Blinkende Animation */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* für verschiedene Geräte optimieren */
+@media (max-width: 767px) {
+    .row {
+        gap: 12px; /* Abstand zwischen den Spalten */
+    }
+
+    .col-12,
+    .col-md-3,
+    .col-md-9 {
+        padding: 16px;
+        border-left: 4px solid #6610f2; /* Indigo-Farbe */
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 6px;
+    }
+
+    /* Wenn das Kontextmenü sichtbar wird (nicht mehr d-none) */
+    .context-menu:not(.d-none) {
+        padding: 16px;
+        border-left: 4px solid #6610f2; /* Indigo-Farbe */
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 6px;
+    }
+}

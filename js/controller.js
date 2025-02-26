@@ -86,6 +86,13 @@ class Controller {
         this.addSaveEditedItemEventListener();
         // Event-Listener fürs endgültige Löschen von Items
         this.addDeleteItemEventListener();
+
+        // füge einen Event-Listener zum Navbar-Brand hinzu
+        document.querySelector('.navbar-brand').addEventListener('click', function() {
+            // toggle die Klasse 'clicked' für die Animation
+            this.classList.toggle('clicked');
+        });
+
     }
 
     // Event-Listener fürs endgültige Löschen von Items
@@ -106,7 +113,7 @@ class Controller {
                 );
 
                 if (isItemUsed) {
-                    alert(`${item.name} wird noch verwendet.`);
+                    alert(`Der Artikel "${item.name}" kann nicht gelöscht werden, weil er in einer oder mehreren Listen verwendet wird.`);
                     return;
                 }
                 // Sicherheitsabfrage
@@ -213,7 +220,7 @@ class Controller {
 
                 // checken, ob Tag noch verwendet wird
                 if(tag.itemIds.size > 0) {
-                    alert(`${tag.name} wird noch verwendet.`);
+                    alert(`Der Tag "${tag.name}" kann nicht gelöscht werden, weil er in einer oder mehreren Listen verwendet wird.`);
                     return;
                 }
                 // Sicherheitsabfrage
@@ -433,8 +440,21 @@ class Controller {
                 const activeList = model.getListById(listId);
                 if (activeList) {
                     model.completeList(listId);
+                    if(activeList.completed) {
+                        const activeListItem = document.querySelector(".listdetails")
+                        activeListItem.classList.add("completed-animation");
+                        // Nach der Animation Klasse wieder entfernen (damit man es nochmal auslösen kann)
+                        setTimeout(() => {
+                            activeListItem.classList.remove("completed-animation");
+                        }, 1000);
+                    }
                 }
+
+
+
             }
+
+
         });
     }
 
