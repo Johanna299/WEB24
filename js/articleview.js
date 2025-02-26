@@ -15,6 +15,9 @@ export class ArticleView {
         this.itemNameInput = document.querySelector('#item-name-input');
         this.itemDescription = document.querySelector('#item-description');
         this.tagContainer = document.querySelector('#tag-container');
+
+        // fürs Filtern
+        this.filterTagsContainer = document.querySelector("#filter-tags-container");
     }
 
     renderAddItem(list, allItems) {
@@ -60,4 +63,42 @@ export class ArticleView {
         </button>
         `;
     }
+
+    // Tags im Filter-Modal rendern
+    renderFilterTags(tags) {
+        this.filterTagsContainer.innerHTML = ""; // vorherige Inhalte entfernen
+
+        tags.forEach(tag => {
+            let tagElement = document.createElement("div");
+            tagElement.classList.add("form-check");
+
+            tagElement.innerHTML = `
+            <input class="form-check-input" type="checkbox" value="${tag.id}" id="tag-${tag.id}">
+            <label class="form-check-label" for="tag-${tag.id}">
+                ${tag.name}
+            </label>
+        `;
+
+            this.filterTagsContainer.appendChild(tagElement);
+        });
+    }
+
+    applyTagFilter(model, listId) {
+        let selectedTagsID = Array.from(document.querySelectorAll("#filter-tags-container input:checked"))
+            .map(input => Number(input.value));
+
+        // TODO für jede selectedTagsID muss das gemacht werden.
+        // hole die Tag-Objekte anhand der Tag-IDs
+        /*let selectedTags = selectedTagsID.map(id => model.getTagById(id));*/
+        console.log("Ausgewählte Tags:", selectedTagsID);
+
+        // Filter anwenden mit nur den Tag-IDs
+        let filteredItems = model.getFilteredItemsByTags(selectedTagsID);
+
+        console.log("Gefilterte Artikel:", filteredItems);
+
+
+        this.renderAddItem(model.getListById(listId), filteredItems);
+    }
+
 }

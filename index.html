@@ -63,7 +63,7 @@
                         <i class="bi bi-x-lg" id="close-context-menu-add-icon"></i>
                     </button>
                 </div>
-                <button class="btn btn-outline-secondary my-2">Filtern</button>
+                <button class="btn btn-outline-secondary my-2" id="filter-button">Filtern</button>
                 <button class="btn btn-primary w-100 mt-3" id="new-article"><i class="bi bi-plus-lg"></i> Neuer Artikel...</button>
                 <ul class="list-group allitems">
                     <!-- Artikel für Hinzufügen werden dynamisch geladen -->
@@ -110,6 +110,29 @@
             </div>
 
 
+        </div>
+    </div>
+
+    <!-- Filter-Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">Filtern nach Tags</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="filter-form">
+                        <div id="filter-tags-container" class="d-flex flex-wrap gap-2">
+                            <!-- dynamisch generierte Tag-Checkboxen -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                    <button type="button" class="btn btn-primary" id="apply-filter">Filter anwenden</button>
+                </div>
+            </div>
         </div>
     </div>
 

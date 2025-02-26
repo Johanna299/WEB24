@@ -59,6 +59,13 @@ class Model extends Subject {
         this.#loadFromJSON();
     }
 
+    // filtert Artikel basierend auf den Tag-IDs
+    getFilteredItemsByTags(selectedTagIds) {
+        return Array.from(this.items.values()).filter(item =>
+            selectedTagIds.every(tagId => item.tags.includes(this.getTagById(tagId)))
+        );
+    }
+
     // Item in angegebener Menge der Liste hinzufügen
     addItemToList(list, item, quantity) {
         if (!list || !item || !quantity) {
@@ -158,6 +165,10 @@ class Model extends Subject {
     // liefert item anhand einer itemId
     getItemById(id) {
         return this.items.get(Number(id));
+    }
+
+    getTagById(id) {
+        return this.tags.get(Number(id));
     }
 
 }

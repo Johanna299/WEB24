@@ -54,7 +54,24 @@ class Controller {
         this.addItemEventListener();
         // Event-Listener zur Bestätigung der Mengeneingabe eines Artikels
         this.addSubmitQuantityListener();
+        // Event-Listener fürs Filtern
+        this.addFilterButtonEventListener();
     }
+
+    // Event-Listener für "Filtern"- bzw. "Filter anwenden"-Button
+    addFilterButtonEventListener() {
+        document.querySelector("#filter-button").addEventListener("click", () => {
+            this.articleView.renderFilterTags(model.tags); // TODO
+            let filterModal = new bootstrap.Modal(document.getElementById("filterModal"));
+            filterModal.show();
+        });
+
+        document.querySelector("#apply-filter").addEventListener("click", () => {
+            // Filter anwenden
+            this.articleView.applyTagFilter(model, this.activeListId);
+        });
+    }
+
 
     // Event-Listener zur Bestätigung der Mengeneingabe eines Artikels
     addSubmitQuantityListener(){
