@@ -29,9 +29,8 @@ export default class List {
         return this.items.length > 0 && this.items.every(item => item.isChecked);
     }
 
-    //TODO
     markCompleted() {
-        // TODO überprüfen, ob alle Items isChecked true haben: wenn ja, dann Liste abschließen; wenn nicht, Fehlermeldung für User
+        // überprüfen, ob alle Items isChecked true haben: wenn ja, dann Liste abschließen
         if (this.isCompletable()) {
             this.completed = true;
             console.log("Liste wurde abgeschlossen", this);

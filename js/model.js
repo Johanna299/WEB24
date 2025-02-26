@@ -145,7 +145,6 @@ class Model extends Subject {
             console.log("Model: Aktuelle Listen in der Map:", this.lists);
         }
 
-        // TODO listview updaten? detailview updaten?
         this.notify("listUncompletedDetailView", list);
         this.notify("listUncompletedListView", this.lists);
     }

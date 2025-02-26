@@ -24,16 +24,6 @@ export default class User {
         this.email = newEmail;
     }
 
-    // Gibt den Namen des Benutzers zurück
-    getName() {
-        return this.name;
-    }
-
-    // Gibt die E-Mail-Adresse des Benutzers zurück
-    getEmail() {
-        return this.email;
-    }
-
     // Erzeugt eine kurze Darstellung des Benutzers für eine Anzeige
     getUserSummary() {
         return `${this.name} (${this.email})`;

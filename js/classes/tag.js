@@ -7,6 +7,4 @@ export default class Tag {
         this.id = id ?? ++Tag.id;
         this.name = name;
     }
-
-
 }
