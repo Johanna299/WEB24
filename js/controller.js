@@ -21,8 +21,11 @@ class Controller {
         model.subscribe("listUncompletedListView", this.listView, this.listView.render);
         model.subscribe("itemAddedToList", this.listDetailView, this.listDetailView.render);
         model.subscribe("newItemCreated", this.articleView, this.articleView.renderAddItem);
-        model.subscribe("newTagCreated", this.articleView, this.articleView.addNewTagToTagCheckboxes);
+        model.subscribe("newTagCreatedNewItem", this.articleView, this.articleView.addNewTagToTagCheckboxes);
         model.subscribe("removedTagFromItem", this.articleView, this.articleView.renderEditItemMenu);
+        model.subscribe("deletedTag", this.articleView, this.articleView.renderFilterTags);
+        model.subscribe("newTagCreatedEditItem", this.articleView, this.articleView.addNewTagToListGroup);
+        model.subscribe("updatedItem", this.listDetailView, this.listDetailView.render);
     }
 
     init(){
@@ -73,6 +76,87 @@ class Controller {
         this.addRemoveTagFromItemEventListener();
         // Event-Listener fürs endgültige Löschen von Tags
         this.addDeleteTagEventListener();
+        // Event-Listener fürs "Neuer Tag" in "Artikel bearbeiten"
+        this.addAddTagToItemEventListener();
+        // Event-Listener fürs "Tag hinzufügen" in "Artikel bearbeiten"
+        this.addAddNewTagToItemEventListener();
+        // Event-Listener fürs "Artikel bearbeiten" schließen
+        this.addCloseEditItemEventListener();
+        // Event-Listener für "Änderungen speichern" in "Artikel bearbeiten"
+        this.addSaveEditedItemEventListener();
+    }
+
+    // Event-Listener für "Änderungen speichern" in "Artikel bearbeiten"
+    addSaveEditedItemEventListener() {
+        this.articleView.contextMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "save-edited-item-button" || ev.target.id == "save-edited-item-icon"){
+                console.log("'Änderungen speichern' geklickt");
+
+                let itemId = ev.target.dataset.id;
+
+                // Werte aus den Eingabefeldern auslesen
+                const symbol = document.querySelector("#edit-item-symbol").value;
+                const name = document.querySelector("#edit-item-name").value.trim();
+
+                // Validierung: Name darf nicht leer sein
+                if (!name) {
+                    console.error("Der Tagname darf nicht leer sein!");
+                    return;
+                }
+
+                console.log("Änderungen für Item:", itemId, symbol, name);
+
+                model.updateItem(this.activeListId, itemId, symbol, name);
+            }
+
+        });
+    }
+
+    // Event-Listener fürs "Artikel bearbeiten" schließen
+    addCloseEditItemEventListener() {
+        this.articleView.contextMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "close-context-menu-item" || ev.target.id == "close-context-menu-item-icon"){
+                console.log("'Artikel bearbeiten'-Schließen geklickt");
+
+                this.articleView.closeEditItemMenu();
+            }
+
+        });
+    }
+
+    // Event-Listener fürs "Tag hinzufügen" in "Artikel bearbeiten"
+    addAddNewTagToItemEventListener(){
+        this.articleView.contextMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "add-custom-new-tag"){
+                console.log("'Tag hinzufügen' geklickt");
+
+                // Wert aus dem Eingabefeld auslesen
+                const name = document.querySelector("#custom-new-tag").value.trim();
+
+                // Validierung: Name darf nicht leer sein
+                if (!name) {
+                    console.error("Der Tagname darf nicht leer sein!");
+                    return;
+                }
+
+                console.log("Neuer Tag:", name);
+
+                model.createNewTagInEditItem(name);
+            }
+
+        });
+    }
+
+    // Event-Listener fürs "Neuer Tag" in "Artikel bearbeiten"
+    addAddTagToItemEventListener() {
+        this.articleView.contextMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "add-new-tag-button" || ev.target.id == "add-new-tag-icon"){
+                console.log("'Neuer Tag' geklickt");
+
+                this.articleView.renderNewTagInput();
+            }
+
+        });
     }
 
     // Event-Listener fürs endgültige Löschen von Tags
@@ -87,12 +171,12 @@ class Controller {
                 currentTagId = ev.target.dataset.tagId;
                 const tag = model.getTagById(currentTagId);
 
-                // TODO checken, ob Tag noch verwendet wird
+                // checken, ob Tag noch verwendet wird
                 if(tag.itemIds.size > 0) {
                     alert(`${tag.name} wird noch verwendet.`);
                     return;
                 }
-                // TODO Sicherheitsabfrage
+                // Sicherheitsabfrage
                 document.getElementById("deleteTagModalLabel").textContent = `Tag "${tag.name}" löschen?`;
                 deleteTagModal.show();
 
@@ -161,7 +245,7 @@ class Controller {
                 console.log("Neuer Tag:", name);
 
                 // TODO Dem Model den neuen Tag übergeben
-                model.createNewTag(name);
+                model.createNewTagInNewItem(name);
             }
 
         });

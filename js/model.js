@@ -65,7 +65,7 @@ class Model extends Subject {
         console.log("Model: Tag gelöcht", currentTagId);
         console.log("Model: Aktuelle Tags: ", this.tags);
 
-        // TODO model notify
+        model.notify("deletedTag", this.tags);
     }
 
     // filtert Artikel basierend auf den Tag-IDs
@@ -191,7 +191,7 @@ class Model extends Subject {
         this.notify("newItemCreated", this.items);
     }
 
-    createNewTag(name) {
+    createNewTagInNewItem(name) {
         // Erstelle einen neuen Tag
         const newTag = new Tag(null, name);
 
@@ -201,9 +201,34 @@ class Model extends Subject {
         console.log("Model: Neuen Tag erstellt:", newTag);
         console.log("Model: Tags", this.tags);
 
-        this.notify("newTagCreated", newTag); // TODO
+        this.notify("newTagCreatedNewItem", newTag);
     }
 
+    createNewTagInEditItem(name) {
+        // Erstelle einen neuen Tag
+        const newTag = new Tag(null, name);
+
+        // Speichere das Item in der Map
+        this.tags.set(newTag.id, newTag);
+
+        console.log("Model: Neuen Tag erstellt:", newTag);
+        console.log("Model: Tags", this.tags);
+
+        this.notify("newTagCreatedEditItem", newTag);
+    }
+
+    updateItem(listId, itemId,symbol,name) {
+        let item = this.getItemById(itemId);
+        item.symbol = symbol;
+        item.name = name;
+
+        let list = this.getListById(listId);
+
+        console.log("Model: Item geändert:", itemId);
+        console.log("Model: Items", this.items);
+
+        this.notify("updatedItem", list);
+    }
 
     // liefert list anhand einer listId
     getListById(id) {

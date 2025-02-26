@@ -172,20 +172,52 @@ export class ArticleView {
                     </li>
                 `).join('')} 
             </ul>
-            <!-- Neuer Tag Button -->
-            <button class="btn btn-primary btn-sm mt-2" id="add-new-tag">
-                <i class="bi bi-plus-lg"></i> Neuer Tag
-            </button>
+            
+            <div class =" mb-3" id="add-new-tag-container">
+                <button class="btn btn-primary btn-sm mt-2" id="add-new-tag-button">
+                    <i class="bi bi-plus-lg" id="add-new-tag-icon"></i> Neuer Tag
+                </button>
+            </div>
         </div>
 
-</div>
 
-        <button class="btn btn-primary w-100 mt-3" id="save-edited-item-button">
-            <i class="bi bi-check-lg" id="save-edited-item-icon"></i> Änderungen speichern
+
+        <button class="btn btn-primary w-100 mt-3" id="save-edited-item-button" data-id="${item.id}">
+            <i class="bi bi-check-lg" id="save-edited-item-icon" data-id="${item.id}"></i> Änderungen speichern
         </button>
         `;
 
         this.contextMenu.insertAdjacentHTML("beforeend", html);
+    }
+
+    renderNewTagInput(){
+        document.querySelector("#add-new-tag-container").innerHTML = `
+        <label for="custom-new-tag" class="form-label"> </label>
+        <div class="input-group">
+            <input type="text" id="custom-new-tag" class="form-control" placeholder="Tagname">
+            <button id="add-custom-new-tag" class="btn btn-primary">Tag hinzufügen</button>
+        </div>
+        `;
+    }
+
+    addNewTagToListGroup(tag) {
+        const tagListGroupContainer = document.querySelector('#edit-item-tags');
+        const tagHtml = `
+            <li class="list-group-item d-flex justify-content-between align-items-center" id="tag-${tag.id}">
+                <span>${tag.name}</span>
+                <button class="btn btn-danger btn-sm" id="remove-tag-button" data-tag-id="${tag.id}">
+                    <i class="bi bi-x-lg" id="remove-tag-icon" data-tag-id="${tag.id}"></i>
+                </button>
+            </li>
+        `;
+        tagListGroupContainer.insertAdjacentHTML("beforeend", tagHtml);
+    }
+
+    closeEditItemMenu() {
+        this.detailView.classList.remove('col-md-6');
+        this.detailView.classList.add('col-md-9');
+
+        this.contextMenu.classList.add('d-none');
     }
 
     // Tags im Filter-Modal rendern
