@@ -20,6 +20,8 @@ class Controller {
         model.subscribe("listUncompletedDetailView", this.listDetailView, this.listDetailView.render);
         model.subscribe("listUncompletedListView", this.listView, this.listView.render);
         model.subscribe("itemAddedToList", this.listDetailView, this.listDetailView.render);
+        model.subscribe("newItemCreated", this.articleView, this.articleView.renderAddItem);
+        model.subscribe("newTagCreated", this.articleView, this.articleView.addNewTagToTagCheckboxes);
     }
 
     init(){
@@ -56,6 +58,85 @@ class Controller {
         this.addSubmitQuantityListener();
         // Event-Listener fürs Filtern
         this.addFilterButtonEventListener();
+        // Event-Listener für "Neuer Artikel"-Button
+        this.addNewArticleButtonEventListener();
+        // Event-Listener für "Neuer Artikel"-Ansicht schließen
+        this.addCloseNewArticleEventListener();
+        // Event-Listener für den "Artikel erstellen"-Button
+        this.addSaveNewItemEventListener();
+        // Event-Listener für den "Tag erstellen"-Button
+        this.addNewTagEventListener();
+    }
+
+    // Event-Delegation für den "Tag erstellen"-Button
+    addNewTagEventListener() {
+        this.articleView.newArticleMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "add-custom-tag"){
+                console.log("'Tag erstellen' geklickt");
+                // Werte aus den Eingabefeldern auslesen
+                const name = document.querySelector("#custom-tag").value.trim();
+
+                // Validierung: Name darf nicht leer sein
+                if (!name) {
+                    console.error("Der Tagname darf nicht leer sein!");
+                    return;
+                }
+
+                console.log("Neuer Tag:", name);
+
+                // TODO Dem Model den neuen Tag übergeben
+                model.createNewTag(name);
+            }
+
+        });
+    }
+
+    // Event-Delegation für den "Artikel erstellen"-Button
+    addSaveNewItemEventListener() {
+        this.articleView.newArticleMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "save-new-item-button" || ev.target.id == "save-new-item-icon"){
+                console.log("'Artikel erstellen' geklickt");
+                // Werte aus den Eingabefeldern auslesen
+                const symbol = document.querySelector("#new-item-symbol").value.trim();
+                const name = document.querySelector("#new-item-name").value.trim();
+                const tags = [...document.querySelectorAll("#tag-checkboxes input:checked")].map(tag => tag.value);
+
+                // Validierung: Name darf nicht leer sein
+                if (!name) {
+                    console.error("Der Artikelname darf nicht leer sein!");
+                    return;
+                }
+
+                console.log("Neuer Artikel:", { symbol, name, tags });
+
+                // TODO Dem Model den neuen Artikel übergeben
+                model.createNewItem({ symbol, name, tags });
+
+                // Ansicht schließen
+                this.articleView.closeNewItemMenuOnly();
+            }
+
+        });
+    }
+
+    // Event-Listener für "Neuer Artikel"-Ansicht schließen
+    addCloseNewArticleEventListener() {
+        this.articleView.newArticleMenu.addEventListener("click", (ev) => {
+            if(ev.target.id == "close-context-menu-new-item" || ev.target.id == "close-context-menu-new-icon"){
+                console.log("'Neuer Artikel - Schließen' geklickt");
+                this.articleView.closeNewItemMenu();
+            }
+        });
+
+    }
+
+    // Event-Listener für "Neuer Artikel"-Button
+    addNewArticleButtonEventListener() {
+        this.articleView.newArticleButton.addEventListener("click", () => {
+            console.log("Auf 'Neuer Artikel' geklickt", this.activeListId);
+            this.articleView.closeAddItemMenu();
+            this.articleView.renderNewItemMenu(model.tags);
+        });
     }
 
     // Event-Listener für "Filtern"- bzw. "Filter anwenden"-Button
@@ -131,7 +212,7 @@ class Controller {
                 console.log("'Artikel hinzufügen'-Button für Liste geklickt, ListID:", listId);
 
                 const list = model.getListById(listId);
-                this.articleView.renderAddItem(list, model.items); // TODO benötigt alle bestehenden items von model.js
+                this.articleView.renderAddItem(model.items); // TODO benötigt alle bestehenden items von model.js
             }
         });
     }

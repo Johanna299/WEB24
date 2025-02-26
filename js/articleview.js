@@ -7,6 +7,10 @@ export class ArticleView {
         this.closeButton = document.querySelector('#close-context-menu-add-item');
         this.quantityInputContainer = document.querySelector('#quantity-input-container');
 
+        // "Neuer Artikel"-Ansicht
+        this.newArticleButton = document.querySelector('#new-article');
+        this.newArticleMenu = document.querySelector('#context-menu-new-item');
+
 
         // Einzelansicht eines Artikels
         this.editButton = document.querySelector('#edit-item');
@@ -20,7 +24,7 @@ export class ArticleView {
         this.filterTagsContainer = document.querySelector("#filter-tags-container");
     }
 
-    renderAddItem(list, allItems) {
+    renderAddItem(allItems) {
         // Detailansicht verkleinern
         this.detailView.classList.remove('col-md-9');
         this.detailView.classList.add('col-md-6');
@@ -64,6 +68,70 @@ export class ArticleView {
         `;
     }
 
+    renderNewItemMenu(tags) {
+        this.detailView.classList.remove('col-md-9');
+        this.detailView.classList.add('col-md-6');
+
+        this.newArticleMenu.classList.remove('d-none');
+        this.newArticleMenu.innerHTML = "";
+
+        let menuHtml = `
+        <div class="d-flex justify-content-between align-items-center">
+            <h5>Neuer Artikel</h5>
+            <button class="btn btn-sm btn-outline-secondary" id="close-context-menu-new-item">
+                <i class="bi bi-x-lg" id="close-context-menu-new-icon"></i>
+            </button>
+        </div>
+            
+            <label for="new-item-symbol">Symbol:</label>
+            <input type="text" id="new-item-symbol" class="form-control mb-2" placeholder="🔹">
+            
+            <div class="mb-3">
+          <label for="new-item-name" class="form-label">Artikelname:</label>
+          <input type="text" id="new-item-name" class="form-control" placeholder="Artikel eingeben">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Tags:</label>
+          <div id="tag-checkboxes" class="form-check">
+            ${Array.from(tags.values()).map(tag => `
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="${tag.id}" id="tag-${tag.id}">
+                <label class="form-check-label" for="tag-${tag.id}">${tag.name}</label>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="custom-tag" class="form-label">Neuen Tag erstellen:</label>
+          <div class="input-group">
+            <input type="text" id="custom-tag" class="form-control" placeholder="Tagname">
+            <button id="add-custom-tag" class="btn btn-primary">Tag erstellen</button>
+          </div>
+        </div>
+            
+        <button class="btn btn-primary w-100 mt-3" id="save-new-item-button">
+            <i class="bi bi-check-lg" id="save-new-item-icon"></i> Artikel erstellen
+        </button>
+        `;
+
+        this.newArticleMenu.insertAdjacentHTML("beforeend", menuHtml);
+    }
+
+    // schließt "Neuer Artikel"-Ansicht und vergrößert Detailansicht
+    closeNewItemMenu() {
+        this.detailView.classList.remove('col-md-6');
+        this.detailView.classList.add('col-md-9');
+
+        this.newArticleMenu.classList.add('d-none');
+    }
+
+    // schließt nur "Neuer Artikel"-Ansicht
+    closeNewItemMenuOnly() {
+        this.newArticleMenu.classList.add('d-none');
+    }
+
     // Tags im Filter-Modal rendern
     renderFilterTags(tags) {
         this.filterTagsContainer.innerHTML = ""; // vorherige Inhalte entfernen
@@ -81,6 +149,18 @@ export class ArticleView {
 
             this.filterTagsContainer.appendChild(tagElement);
         });
+    }
+
+    // rendert neu erstellten Tag in die "Neuer Artikel"-Ansicht hinzu
+    addNewTagToTagCheckboxes(tag) {
+        const tagCheckboxesContainer = document.querySelector('#tag-checkboxes');
+        const tagHtml = `
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="${tag.id}" id="tag-${tag.id}">
+                <label class="form-check-label" for="tag-${tag.id}">${tag.name}</label>
+            </div>
+        `;
+        tagCheckboxesContainer.insertAdjacentHTML("beforeend", tagHtml);
     }
 
     applyTagFilter(model, listId) {

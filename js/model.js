@@ -157,6 +157,38 @@ class Model extends Subject {
         }
     }
 
+    createNewItem({ symbol, name, tags }) {
+        if (!symbol || !name) {
+            console.error("Fehler: Ungültige Parameter für createNewItem");
+            return;
+        }
+
+        // Erstelle ein neues Item
+        const newItem = new Item(Item.id++, name, symbol, tags);
+
+        // Speichere das Item in der Map
+        this.items.set(newItem.id, newItem);
+
+        console.log("Model: Neues Item erstellt:", newItem);
+        console.log("Model: Items", this.items);
+
+        this.notify("newItemCreated", this.items);
+    }
+
+    createNewTag(name) {
+        // Erstelle einen neuen Tag
+        const newTag = new Tag(null, name);
+
+        // Speichere das Item in der Map
+        this.tags.set(newTag.id, newTag);
+
+        console.log("Model: Neuen Tag erstellt:", newTag);
+        console.log("Model: Tags", this.tags);
+
+        this.notify("newTagCreated", newTag); // TODO
+    }
+
+
     // liefert list anhand einer listId
     getListById(id) {
         return this.lists.get(Number(id));
