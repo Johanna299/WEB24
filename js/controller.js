@@ -11,7 +11,7 @@ class Controller {
         this.activeListId = null; // speichert die ID der aktiven Liste
 
         // Subscribe to the model
-        model.subscribe("dataLoaded", this, this.onDataLoaded); //TODO
+        model.subscribe("dataLoaded", this, this.onDataLoaded);
         model.subscribe("addList", this.listView, this.listView.addList);
         model.subscribe("listNameUpdated", this, this.onListUpdated);
         model.subscribe("itemRemoved", this.listDetailView, this.listDetailView.render);
@@ -264,12 +264,7 @@ class Controller {
                 const item = model.getItemById(itemId);
 
                 // Zeige das Bearbeitungsmenü an
-                this.articleView.renderEditItemMenu(item); // TODO
-
-                // TODO Füge EventListener für Speichern hinzu
-                /*this.articleView.saveButton.addEventListener("click", () => {
-                    this.saveItemChanges(item);
-                });*/
+                this.articleView.renderEditItemMenu(item);
             }
 
         });
@@ -291,7 +286,6 @@ class Controller {
 
                 console.log("Neuer Tag:", name);
 
-                // TODO Dem Model den neuen Tag übergeben
                 model.createNewTagInNewItem(name);
             }
 
@@ -317,7 +311,6 @@ class Controller {
 
                 console.log("Neuer Artikel:", { symbol, name, tags });
 
-                // TODO Dem Model den neuen Artikel übergeben
                 model.createNewItem({ symbol, name, tags });
 
                 // Ansicht schließen
@@ -350,7 +343,7 @@ class Controller {
     // Event-Listener für "Filtern"- bzw. "Filter anwenden"-Button
     addFilterButtonEventListener() {
         document.querySelector("#filter-button").addEventListener("click", () => {
-            this.articleView.renderFilterTags(model.tags); // TODO
+            this.articleView.renderFilterTags(model.tags);
             let filterModal = new bootstrap.Modal(document.getElementById("filterModal"));
             filterModal.show();
         });
@@ -389,7 +382,6 @@ class Controller {
                 // Item in angegebener Menge der Liste hinzufügen
                 model.addItemToList(list, item, quantity);
 
-                // TODO submit input ausblenden
             }
         });
     }
@@ -405,7 +397,7 @@ class Controller {
             console.log("Bestehende Artikel angeklickt");
             let itemId = ev.target.dataset.id;
             const item = model.getItemById(itemId);
-            this.articleView.renderQuantityInput(item); // TODO
+            this.articleView.renderQuantityInput(item);
         });
     }
 
@@ -425,7 +417,7 @@ class Controller {
                 console.log("'Artikel hinzufügen'-Button für Liste geklickt, ListID:", listId);
 
                 const list = model.getListById(listId);
-                this.articleView.renderAddItem(model.items); // TODO benötigt alle bestehenden items von model.js
+                this.articleView.renderAddItem(model.items);
             }
         });
     }
@@ -501,7 +493,7 @@ class Controller {
                 const activeList = model.getListById(this.activeListId);
                 if (activeList) {
                     model.toggleItemChecked(this.activeListId, itemId); // aktualisiert das Model
-                    //this.listDetailView.render(activeList); // TODO MIT SUBSCRIBE Render die Liste neu (opt.)
+                    //this.listDetailView.render(activeList);
                 }
             }
         });
@@ -571,8 +563,6 @@ class Controller {
         });
     }
 
-    // TODO je nachdem welches aktiv --> listDetailView
-
     // setzt das aktive Listenelement
     #setActiveList(clickedItem) {
         // entfernt die "active"-Klasse von allen Listenelementen
@@ -614,7 +604,6 @@ class Controller {
 
         // Alle Views aktualisieren
         this.listView.render(data.lists);
-        // TODO DetailView und ArticleView aktualisieren, zuvor detailView und articleView importieren!
 
         // falls es eine gespeicherte aktive Liste gibt, wiederherstellen
         if (this.activeListId) {

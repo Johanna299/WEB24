@@ -38,8 +38,6 @@ export class ListDetailView {
         </button>
         `;
 
-        // TODO mit class d-none arbeiten? für Kontextmenüs
-
     }
 
     // rendert Eingabefeld, um den Listennamen zu ändern

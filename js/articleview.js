@@ -15,7 +15,6 @@ export class ArticleView {
         // Einzelansicht eines Artikels
         this.contextMenuItem = document.querySelector('#context-menu-item');
 
-        // TODO löschen?
         this.editButton = document.querySelector('#edit-item');
         this.saveButton = document.querySelector('#save-item');
         this.itemNameText = document.querySelector('#item-name-text');
@@ -260,9 +259,6 @@ export class ArticleView {
         let selectedTagsID = Array.from(document.querySelectorAll("#filter-tags-container input:checked"))
             .map(input => Number(input.value));
 
-        // TODO für jede selectedTagsID muss das gemacht werden.
-        // hole die Tag-Objekte anhand der Tag-IDs
-        /*let selectedTags = selectedTagsID.map(id => model.getTagById(id));*/
         console.log("Ausgewählte Tags:", selectedTagsID);
 
         // Filter anwenden mit nur den Tag-IDs

@@ -21,13 +21,6 @@ body {
 .btn-primary {
     background-color: var(--bs-primary);  /* Verwende die Primärfarbe für Schaltflächen */
     border-color: var(--bs-primary);       /* Setze die Rahmenfarbe */
-
-    /* TODO GEHT NICHT */
-    :hover {
-        background-color: var(--bs-primary); /* Halte die Primärfarbe */
-        border-color: var(--bs-primary); /* Halte die Primärfarbe */
-        filter: brightness(90%); /* Mache die Schaltfläche 10% dunkler */
-    }
 }
 
 /* Checkboxen in Detailansicht */
@@ -57,7 +50,7 @@ li.list-group-item.completed {
 
 .row {
     flex-grow: 1;  /* Lässt die Zeile den restlichen Platz einnehmen */
-    min-height: 90vh; /* Zeile nimmt restliche Bildschirmhöhe ein TODO UMÄNDERN, navbar berücksichtigen, 90vh ist trotzdem zu wenig, ganz bisserl abstand unten */
+    min-height: 90vh; /* Zeile nimmt restliche Bildschirmhöhe ein */
 }
 
 .sidebar, .content {

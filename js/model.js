@@ -46,7 +46,6 @@ class Model extends Subject {
                 Item.id = Math.max(...data.items.map(item => item.id), Item.id);
                 Tag.id = Math.max(...data.tags.map(tag => tag.id), Tag.id);
 
-                // TODO, alle Sichten müssen geupdatet/gerendert werden, die müssen sich auch noch subscriben
                 this.notify("dataLoaded", {
                     lists: this.lists,
                     items: this.items,
